@@ -4,13 +4,15 @@ ru/bulldog/eshop/EShopConfig.java
  ru.bulldog.eshop.EShopConfig
 ru/bulldog/eshop/service/ProductServiceImpl.java
  ru.bulldog.eshop.service.ProductServiceImpl
-ru/bulldog/eshop/model/Product.java
- ru.bulldog.eshop.model.Product
+ru/bulldog/eshop/EShop.java
+ ru.bulldog.eshop.EShop
 ru/bulldog/eshop/service/ProductService.java
  ru.bulldog.eshop.service.ProductService
 ru/bulldog/eshop/repository/ProductRepo.java
  ru.bulldog.eshop.repository.ProductRepo
+ru/bulldog/eshop/model/Product.java
+ ru.bulldog.eshop.model.Product
+ru/bulldog/eshop/web/ProductController.java
+ ru.bulldog.eshop.web.ProductController
 ru/bulldog/eshop/Cart.java
  ru.bulldog.eshop.Cart
-ru/bulldog/eshop/EShop.java
- ru.bulldog.eshop.EShop
