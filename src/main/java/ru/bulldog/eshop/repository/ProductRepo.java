@@ -59,17 +59,4 @@ public class ProductRepo implements EntityRepo<Product> {
 	public List<Product> getAll() {
 		return products;
 	}
-
-	public Product save(Product product) {
-		if (products.contains(product)) {
-			int idx = products.indexOf(product);
-			Product exists = products.get(idx);
-			product.setId(exists.getId());
-			products.set(idx, product);
-			return product;
-		}
-		product.setId(products.size() + 1);
-		products.add(product);
-		return product;
-	}
 }
