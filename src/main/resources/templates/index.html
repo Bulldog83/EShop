@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>E-Stationery</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h4><a href="/new">Add product</a></h4>
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">ID</th>
+					<th scope="col">Title</th>
+					<th scope="col">Price</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="product, item: ${products}">
+					<th scope="row" th:text="${item.index + 1}"></th>
+					<td th:text="${product.id}"></td>
+					<td th:text="${product.title}"></td>
+					<td th:text="${product.cost}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
