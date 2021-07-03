@@ -4,10 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.bulldog.eshop.model.Product;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class ProductRepo implements EntityRepo<Product> {
@@ -57,18 +54,18 @@ public class ProductRepo implements EntityRepo<Product> {
 
 	@Override
 	public List<Product> getAll() {
-		return products;
+		return Collections.unmodifiableList(products);
 	}
 
 	public Product save(Product product) {
 		if (products.contains(product)) {
 			int idx = products.indexOf(product);
-			Product exists = products.get(idx);
-			product.setId(exists.getId());
 			products.set(idx, product);
 			return product;
 		}
-		product.setId(products.size() + 1);
+		long id = products.stream().mapToLong(Product::getId)
+				.max().orElse(0) + 1;
+		product.setId(id);
 		products.add(product);
 		return product;
 	}

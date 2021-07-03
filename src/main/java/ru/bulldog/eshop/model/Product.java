@@ -4,24 +4,24 @@ import java.util.Objects;
 
 public class Product {
 
-	private long id;
+	private Long id;
 	private String title;
-	private double cost;
+	private double price;
 
 	public Product() {}
 
-	public Product(String title, double cost) {
+	public Product(String title, double price) {
 		this.title = title;
-		this.cost = cost;
+		this.price = price;
 	}
 
-	public Product(long id, String title, double cost) {
+	public Product(long id, String title, double price) {
 		this.id = id;
 		this.title = title;
-		this.cost = cost;
+		this.price = price;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -37,12 +37,12 @@ public class Product {
 		this.title = title;
 	}
 
-	public double getCost() {
-		return cost;
+	public double getPrice() {
+		return price;
 	}
 
-	public void setCost(double cost) {
-		this.cost = cost;
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	@Override
@@ -50,12 +50,11 @@ public class Product {
 		if (this == o) return true;
 		if (!(o instanceof Product)) return false;
 		Product product = (Product) o;
-		return id == product.id && Double.compare(product.cost, cost) == 0 &&
-				title.equals(product.title);
+		return id == product.id && title.equals(product.title);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title, cost);
+		return Objects.hash(id, title);
 	}
 }
