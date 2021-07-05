@@ -9,4 +9,5 @@ public interface ProductService {
 	Optional<Product> getById(long id);
 	List<Product> getAll();
 	Product save(Product product);
+	Product create(String title, double price);
 }
