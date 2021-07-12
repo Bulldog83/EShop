@@ -1,72 +1,87 @@
 package ru.bulldog.eshop.repository;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.bulldog.eshop.model.Product;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductRepo implements EntityRepo<Product> {
 
-	private List<Product> products;
+	private final static Logger logger = LogManager.getLogger(ProductRepo.class);
+
+	private final SessionFactory sessionFactory;
+
+	@Autowired
+	public ProductRepo(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	@PostConstruct
 	private void init() {
-		products = new ArrayList<>(Arrays.asList(
-				new Product(1, "Blue Pen", 5.45),
-				new Product(2, "Red Pen", 5.45),
-				new Product(3, "Green Pen", 5.45),
-				new Product(4, "Pencils Box", 20.0),
-				new Product(5, "Paper Block", 10.25),
-				new Product(6, "Notebook", 3.15),
-				new Product(7, "Notebook", 3.15),
-				new Product(8, "Notebook", 2.95),
-				new Product(9, "Notebook", 2.85),
-				new Product(10, "Notebook", 4.0),
-				new Product(11, "Scratchpad", 2.15),
-				new Product(12, "Scratchpad", 2.15),
-				new Product(13, "Scratchpad", 2.2),
-				new Product(14, "Scotch tape", 1.25),
-				new Product(15, "Scotch tape", 1.75),
-				new Product(16, "Scotch tape", 2.25),
-				new Product(17, "Scotch tape", 4.5),
-				new Product(18, "Paints", 3.0),
-				new Product(19, "Paints", 3.55),
-				new Product(20, "Paints", 4.5),
-				new Product(21, "Paints", 5.25),
-				new Product(22, "Paints", 6.15),
-				new Product(23, "Set of pens", 12.45),
-				new Product(24, "Set of pens", 13.15),
-				new Product(25, "Set of pens", 13.5),
-				new Product(26, "Set of pens", 13.8),
-				new Product(27, "Ruler", 1.45),
-				new Product(28, "Ruler", 1.5),
-				new Product(29, "Ruler", 2.0),
-				new Product(30, "Ruler", 2.45)
-		));
+		try (Session session = sessionFactory.getCurrentSession()) {
+			String schemaSql = Files.lines(Paths.get(getClass().getResource("/schema.sql").toURI())).collect(Collectors.joining(" "));
+			String dataSql = Files.lines(Paths.get(getClass().getResource("/data.sql").toURI())).collect(Collectors.joining(" "));
+			session.beginTransaction();
+			session.createNativeQuery(schemaSql).executeUpdate();
+			session.createNativeQuery(dataSql).executeUpdate();
+			session.getTransaction().commit();
+		} catch (Exception ex) {
+			logger.error("Database init error", ex);
+		}
 	}
 
 	@Override
 	public Optional<Product> getOne(long id) {
-		return products.stream().filter(product -> product.getId() == id).findFirst();
+		try (Session session = sessionFactory.getCurrentSession()) {
+			session.beginTransaction();
+			Product product = session.get(Product.class, id);
+			session.getTransaction().commit();
+			return Optional.of(product);
+		} catch (Exception ex) {
+			return Optional.empty();
+		}
 	}
 
 	@Override
-	public List<Product> getAll() {
-		return Collections.unmodifiableList(products);
+	@SuppressWarnings("unchecked")
+	public List<Product> findAll() {
+		try (Session session = sessionFactory.getCurrentSession()) {
+			session.beginTransaction();
+			List<Product> products = (List<Product>) session.createQuery("from Product").getResultList();
+			session.getTransaction().commit();
+			return products;
+		} catch (Exception ex) {
+			logger.warn("Data base error", ex);
+			return new ArrayList<>();
+		}
 	}
 
 	public Product save(Product product) {
-		if (products.contains(product)) {
-			int idx = products.indexOf(product);
-			products.set(idx, product);
-			return product;
+		try (Session session = sessionFactory.getCurrentSession()) {
+			session.beginTransaction();
+			session.saveOrUpdate(product);
+			session.getTransaction().commit();
 		}
-		long id = products.stream().mapToLong(Product::getId)
-				.max().orElse(0) + 1;
-		product.setId(id);
-		products.add(product);
 		return product;
+	}
+
+	public void delete(Product product) {
+		try (Session session = sessionFactory.getCurrentSession()) {
+			session.beginTransaction();
+			session.delete(product);
+			session.getTransaction().commit();
+		}
 	}
 }
