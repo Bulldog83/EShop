@@ -5,5 +5,5 @@ import java.util.Optional;
 
 public interface EntityRepo<T> {
 	Optional<T> getOne(long id);
-	List<T> getAll();
+	List<T> findAll();
 }

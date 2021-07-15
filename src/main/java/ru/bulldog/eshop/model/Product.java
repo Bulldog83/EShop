@@ -1,11 +1,18 @@
 package ru.bulldog.eshop.model;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "products")
 public class Product {
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "raw_id")
 	private Long id;
+	@Column
 	private String title;
+	@Column
 	private double price;
 
 	public Product() {}
@@ -50,7 +57,10 @@ public class Product {
 		if (this == o) return true;
 		if (!(o instanceof Product)) return false;
 		Product product = (Product) o;
-		return id == product.id && title.equals(product.title);
+		if (id == null) {
+			return product.id == null && title.equals(product.title);
+		}
+		return id.equals(product.id) && title.equals(product.title);
 	}
 
 	@Override
