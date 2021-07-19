@@ -15,6 +15,14 @@
 		</nav>
 	</div>
 	<div class="container" style="margin-top: 70px;">
+		<form class="row" action="#" th:action="@{/products/filter}">
+			<div class="input-group">
+				<span class="input-group-text">Min and Max Price</span>
+				<input type="number" step=".01" class="form-control" name="min" aria-label="Min Price" th:value="${minPrice} ?: '0.0'">
+				<input type="number" step=".01" class="form-control" name="max" aria-label="Max Price" th:value="${maxPrice} ?: '0.0'">
+				<button type="submit" class="btn btn-primary">Apply</button>
+			</div>
+		</form>
 		<table class="table">
 			<thead>
 				<tr>
@@ -22,6 +30,7 @@
 					<th scope="col">ID</th>
 					<th scope="col">Title</th>
 					<th scope="col">Price</th>
+					<th scope="col">&nbsp;</th>
 					<th scope="col">&nbsp;</th>
 				</tr>
 			</thead>
@@ -32,6 +41,7 @@
 					<td th:text="${product.title}"></td>
 					<td th:text="${product.price}"></td>
 					<td><a class="btn btn-primary" href="#" th:href="@{'products/' + ${product.id}}">Details</a></td>
+					<td><a class="btn btn-primary" href="#" th:href="@{'products/delete/' + ${product.id}}">Delete</a></td>
 				</tr>
 			</tbody>
 		</table>

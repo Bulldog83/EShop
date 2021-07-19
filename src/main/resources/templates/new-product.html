@@ -15,17 +15,17 @@
 		</nav>
 	</div>
 	<div class="container" style="margin-top: 70px;">
+		<h4>New product:</h4>
 		<form th:action="@{/products/new}" action="#" method="post">
-			<h4>New product:</h4>
 			<div class="mb-3">
 				<label for="title" class="form-label">Title</label>
 				<input id="title" class="form-control" name="title">
-			  </div>
-			  <div class="mb-3">
+			</div>
+			<div class="mb-3">
 				<label for="price" class="form-label">Price</label>
 				<input id="price" type="number" step=".01" class="form-control" name="price">
-			  </div>
-			  <button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
 		</form>
 	</div>
 </body>
