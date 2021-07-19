@@ -53,4 +53,18 @@ public class ProductController {
 		productService.create(title, price);
 		return "redirect:/products";
 	}
+
+	@GetMapping("/products/delete/{id}")
+	public String deleteProduct(@PathVariable long id) {
+		productService.delete(id);
+		return "redirect:/products";
+	}
+
+	@GetMapping("/products/filter")
+	public String filterProducts(Model model, @RequestParam(name = "min") double minPrice, @RequestParam(name = "max") double maxPrice) {
+		model.addAttribute("products", productService.findByPrice(minPrice, maxPrice));
+		model.addAttribute("minPrice", minPrice);
+		model.addAttribute("maxPrice", maxPrice);
+		return "index";
+	}
 }
