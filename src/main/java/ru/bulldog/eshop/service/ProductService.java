@@ -1,6 +1,7 @@
 package ru.bulldog.eshop.service;
 
 import org.springframework.data.domain.Page;
+import ru.bulldog.eshop.dto.ProductDTO;
 import ru.bulldog.eshop.model.Product;
 
 import java.util.List;
@@ -13,7 +14,8 @@ public interface ProductService {
 	Page<Product> getPage(int index, int elements);
 	Page<Product> getPageByPrice(double min, double max, int index, int elements);
 	Product save(Product product);
-	Product create(String title, double price);
+	Product create(String title, double price, long category);
+	Product create(ProductDTO productDTO);
 	void delete(Product product);
 	void delete(long id);
 }

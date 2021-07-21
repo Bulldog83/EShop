@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.bulldog.eshop.dto.ProductDTO;
+import ru.bulldog.eshop.model.Category;
 import ru.bulldog.eshop.model.Product;
 import ru.bulldog.eshop.repository.ProductRepo;
 
@@ -14,9 +16,11 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
 	private final ProductRepo repository;
+	private final CategoryService categoryService;
 
 	@Autowired
-	public ProductServiceImpl(ProductRepo repository) {
+	public ProductServiceImpl(ProductRepo repository, CategoryService categoryService) {
+		this.categoryService = categoryService;
 		this.repository = repository;
 	}
 
@@ -69,8 +73,22 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product create(String title, double price) {
+	public Product create(String title, double price, long categoryId) {
 		Product product = new Product(title, price);
+		Category category = categoryService.getById(categoryId);
+		product.setCategory(category);
+		return repository.save(product);
+	}
+
+	@Override
+	public Product create(ProductDTO productDTO) {
+		Product product = new Product();
+		Category category = categoryService.findByTitle(productDTO.getCategory())
+										   .orElse(categoryService.getById(1));
+		product.setTitle(productDTO.getTitle());
+		product.setPrice(productDTO.getPrice());
+		product.setCategory(category);
+
 		return repository.save(product);
 	}
 
