@@ -1,18 +1,16 @@
 package ru.bulldog.eshop.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.bulldog.eshop.model.Product;
 import ru.bulldog.eshop.service.ProductService;
 
+import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 public class ProductController {
 
 	private final ProductService productService;
@@ -22,15 +20,9 @@ public class ProductController {
 		this.productService = productService;
 	}
 
-	@GetMapping("/")
-	public String mainPage() {
-		return "redirect:/products";
-	}
-
 	@GetMapping("/products")
-	public String allProducts(Model model) {
-		model.addAttribute("products", productService.getAll());
-		return "index";
+	public Page<Product> showProducts(@RequestParam(name = "page", defaultValue = "1") int pageIndex) {
+		return productService.getPage(pageIndex - 1, 10);
 	}
 
 	@GetMapping("/products/{id}")
@@ -55,16 +47,12 @@ public class ProductController {
 	}
 
 	@GetMapping("/products/delete/{id}")
-	public String deleteProduct(@PathVariable long id) {
+	public void deleteProduct(@PathVariable long id) {
 		productService.delete(id);
-		return "redirect:/products";
 	}
 
 	@GetMapping("/products/filter")
-	public String filterProducts(Model model, @RequestParam(name = "min") double minPrice, @RequestParam(name = "max") double maxPrice) {
-		model.addAttribute("products", productService.findByPrice(minPrice, maxPrice));
-		model.addAttribute("minPrice", minPrice);
-		model.addAttribute("maxPrice", maxPrice);
-		return "index";
+	public Page<Product> filterProducts(@RequestParam("min") double minPrice, @RequestParam("max") double maxPrice, @RequestParam(name = "page", defaultValue = "1") int pageIndex) {
+		return productService.getPageByPrice(minPrice, maxPrice, pageIndex - 1, 10);
 	}
 }
