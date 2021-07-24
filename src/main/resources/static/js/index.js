@@ -37,8 +37,8 @@ angular.module('eshop', []).controller('indexController', function($scope, $http
 
     $scope.deleteProduct = function(idx, id) {
         $http({
-            url: root + '/delete/' + id,
-            method: 'GET',
+            url: root + '/' + id,
+            method: 'DELETE',
             params: {}
         }).then(function(response) {
             $scope.products.splice(idx, 1);

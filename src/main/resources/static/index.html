@@ -30,6 +30,7 @@
 				<tr>
 					<th scope="col">#</th>
 					<th scope="col">ID</th>
+					<th scope="col">Category</th>
 					<th scope="col">Title</th>
 					<th scope="col">Price</th>
 					<th scope="col">&nbsp;</th>
@@ -40,6 +41,7 @@
 				<tr ng-repeat="product in page.content">
 					<th scope="row">{{page.size * page.number + $index + 1}}</th>
 					<td>{{product.id}}</td>
+					<td>{{product.category}}</td>
 					<td>{{product.title}}</td>
 					<td>{{product.price}}</td>
 					<td><a class="btn btn-primary" href="#">Details</a></td>

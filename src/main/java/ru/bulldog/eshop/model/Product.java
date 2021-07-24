@@ -1,6 +1,10 @@
 package ru.bulldog.eshop.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -8,12 +12,22 @@ import java.util.Objects;
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "raw_id")
+	@Column(name = "raw_id", nullable = false)
 	private Long id;
 	@Column
 	private String title;
 	@Column
 	private double price;
+	@Column
+	@CreationTimestamp
+	private LocalDateTime created;
+	@Column
+	@UpdateTimestamp
+	private LocalDateTime updated;
+
+	@ManyToOne
+	@JoinColumn(name = "category")
+	private Category category;
 
 	public Product() {}
 
@@ -32,7 +46,7 @@ public class Product {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -50,6 +64,22 @@ public class Product {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public LocalDateTime getCreated() {
+		return created;
+	}
+
+	public LocalDateTime getUpdated() {
+		return updated;
 	}
 
 	@Override
