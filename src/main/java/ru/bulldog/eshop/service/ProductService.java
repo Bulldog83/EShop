@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import ru.bulldog.eshop.dto.ProductDTO;
 import ru.bulldog.eshop.model.Product;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +15,7 @@ public interface ProductService {
 	Page<Product> getPage(int index, int elements);
 	Page<Product> getPageByPrice(double min, double max, int index, int elements);
 	Product save(Product product);
-	Product create(String title, double price, long category);
+	Product create(String title, BigDecimal price, long category);
 	Product create(ProductDTO productDTO);
 	void delete(Product product);
 	void delete(long id);

@@ -2,25 +2,21 @@ package ru.bulldog.eshop.dto;
 
 import ru.bulldog.eshop.model.Product;
 
+import java.math.BigDecimal;
+
 public class ProductDTO {
+
 	private Long id;
 	private String title;
-	private double price;
+	private BigDecimal price;
 	private String category;
 
 	public ProductDTO() {}
 
-	public ProductDTO(String title, double price, String category) {
+	public ProductDTO(String title, BigDecimal price, String category) {
 		this.title = title;
 		this.price = price;
 		this.category = category;
-	}
-
-	public ProductDTO(Product product) {
-		this.id = product.getId();
-		this.title = product.getTitle();
-		this.price = product.getPrice();
-		this.category = product.getCategory().getTitle();
 	}
 
 	public Long getId() {
@@ -39,11 +35,11 @@ public class ProductDTO {
 		this.title = title;
 	}
 
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 

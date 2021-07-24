@@ -7,9 +7,21 @@ import ru.bulldog.eshop.dto.ProductDTO;
 import ru.bulldog.eshop.model.Product;
 import ru.bulldog.eshop.service.ProductService;
 
+import java.util.function.Function;
+
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+
+	private final static Function<Product, ProductDTO> productFactory = product -> {
+		ProductDTO productDTO = new ProductDTO();
+		productDTO.setId(product.getId());
+		productDTO.setTitle(product.getTitle());
+		productDTO.setCategory(product.getCategory().getTitle());
+		productDTO.setPrice(product.getPrice());
+
+		return productDTO;
+	};
 
 	private final ProductService productService;
 
@@ -20,23 +32,8 @@ public class ProductController {
 
 	@GetMapping
 	public Page<ProductDTO> showProducts(@RequestParam(name = "page", defaultValue = "1") int pageIndex) {
-		return productService.getPage(pageIndex - 1, 10).map(ProductDTO::new);
+		return productService.getPage(pageIndex - 1, 10).map(productFactory);
 	}
-
-//	@GetMapping("/{id}")
-//	public String showProduct(@PathVariable long id, Model model) {
-//		Optional<Product> productOptional = productService.getById(id);
-//		if (productOptional.isPresent()) {
-//			model.addAttribute("product", productOptional.get());
-//			return "product";
-//		}
-//		return "redirect:/products";
-//	}
-
-//	@GetMapping("/new")
-//	public String newProductForm() {
-//		return "new-product";
-//	}
 
 	@PostMapping
 	public ProductDTO addNewProduct(@RequestBody ProductDTO productDTO) {
@@ -52,6 +49,6 @@ public class ProductController {
 
 	@GetMapping("/filter")
 	public Page<ProductDTO> filterProducts(@RequestParam("min") double minPrice, @RequestParam("max") double maxPrice, @RequestParam(name = "page", defaultValue = "1") int pageIndex) {
-		return productService.getPageByPrice(minPrice, maxPrice, pageIndex - 1, 10).map(ProductDTO::new);
+		return productService.getPageByPrice(minPrice, maxPrice, pageIndex - 1, 10).map(productFactory);
 	}
 }

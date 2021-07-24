@@ -6,19 +6,22 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
-@Table(name = "products")
-public class Product {
+@Table(name = "order_items")
+public class OrderItem {
 	@Id
+	@Column(name = "row_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "raw_id", nullable = false)
 	private Long id;
 	@Column
 	private String title;
 	@Column
+	private int count;
+	@Column
 	private BigDecimal price;
+	@Column
+	private BigDecimal sum;
 	@Column
 	@CreationTimestamp
 	private LocalDateTime created;
@@ -27,21 +30,10 @@ public class Product {
 	private LocalDateTime updated;
 
 	@ManyToOne
-	@JoinColumn(name = "category")
-	private Category category;
+	@JoinColumn(name = "order_id")
+	private Order order;
 
-	public Product() {}
-
-	public Product(String title, BigDecimal price) {
-		this.title = title;
-		this.price = price;
-	}
-
-	public Product(long id, String title, BigDecimal price) {
-		this.id = id;
-		this.title = title;
-		this.price = price;
-	}
+	public OrderItem() {}
 
 	public Long getId() {
 		return id;
@@ -59,6 +51,14 @@ public class Product {
 		this.title = title;
 	}
 
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
 	public BigDecimal getPrice() {
 		return price;
 	}
@@ -67,12 +67,20 @@ public class Product {
 		this.price = price;
 	}
 
-	public Category getCategory() {
-		return category;
+	public BigDecimal getSum() {
+		return sum;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setSum(BigDecimal sum) {
+		this.sum = sum;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	public LocalDateTime getCreated() {
@@ -89,21 +97,5 @@ public class Product {
 
 	public void setUpdated(LocalDateTime updated) {
 		this.updated = updated;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Product)) return false;
-		Product product = (Product) o;
-		if (id == null) {
-			return product.id == null && title.equals(product.title);
-		}
-		return id.equals(product.id) && title.equals(product.title);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, title);
 	}
 }
