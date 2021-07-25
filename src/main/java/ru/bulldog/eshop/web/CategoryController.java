@@ -9,7 +9,7 @@ import ru.bulldog.eshop.dto.CategoryDTO;
 import ru.bulldog.eshop.service.CategoryService;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api/v1/categories")
 public class CategoryController {
 
 	private final CategoryService categoryService;

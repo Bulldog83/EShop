@@ -27,7 +27,7 @@ public class Order {
 	@UpdateTimestamp
 	private LocalDateTime updated;
 
-	@OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderItem> items;
 
 	public Order() {}

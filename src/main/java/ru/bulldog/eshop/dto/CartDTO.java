@@ -10,10 +10,11 @@ public class CartDTO {
 
 	private UUID session;
 	private List<CartItemDTO> items;
-	private BigDecimal totalSum;
+	private BigDecimal sumTotal;
 
 	public CartDTO() {
 		this.items = new ArrayList<>();
+		this.sumTotal = BigDecimal.ZERO;
 	}
 
 	public CartDTO(UUID session) {
@@ -37,12 +38,12 @@ public class CartDTO {
 		this.items = items;
 	}
 
-	public BigDecimal getTotalSum() {
-		return totalSum;
+	public BigDecimal getSumTotal() {
+		return sumTotal;
 	}
 
-	public void setTotalSum(BigDecimal totalSum) {
-		this.totalSum = totalSum;
+	public void setSumTotal(BigDecimal sumTotal) {
+		this.sumTotal = sumTotal;
 	}
 
 	public boolean addItem(long itemId) {
@@ -67,10 +68,17 @@ public class CartDTO {
 	public void removeItem(long itemId) {
 		items.stream().filter(item -> item.getId() == itemId).findFirst().ifPresent(item -> {
 			if (item.getCount() > 1) {
-		        item.decrement();
-		    } else {
-		        items.remove(item);
-		    }
+				item.decrement();
+			} else {
+				items.remove(item);
+			}
+			recalculate();
+		});
+	}
+
+	public void deleteItem(long itemId) {
+		items.stream().filter(item -> item.getId() == itemId).findFirst().ifPresent(item -> {
+			items.remove(item);
 			recalculate();
 		});
 	}
@@ -83,11 +91,12 @@ public class CartDTO {
 	}
 
 	public void clear() {
+		sumTotal = BigDecimal.ZERO;
 		items.clear();
 	}
 
 	private void recalculate() {
-		totalSum = BigDecimal.ZERO;
-		items.forEach(item -> totalSum = totalSum.add(item.getSum()));
+		sumTotal = BigDecimal.ZERO;
+		items.forEach(item -> sumTotal = sumTotal.add(item.getSum()));
 	}
 }

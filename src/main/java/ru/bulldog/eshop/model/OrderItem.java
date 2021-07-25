@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "order_items")
 public class OrderItem {
 	@Id
-	@Column(name = "row_id")
+	@Column(name = "raw_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column

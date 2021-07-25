@@ -1,12 +1,13 @@
 angular.module('eshop', []).controller('indexController', function($scope, $http) {
-    const root = 'http://' + location.host + '/products';
+    const root = 'http://' + location.host + '/api/v1';
 
     $scope.minPrice = 0.01;
     $scope.maxPrice = 0.01;
+    $scope.session = null
 
     $scope.loadProducts = function(pageIndex) {
         $http({
-            url: root,
+            url: root + '/products',
             method: 'GET',
             params: {
                 page: pageIndex + 1
@@ -21,7 +22,7 @@ angular.module('eshop', []).controller('indexController', function($scope, $http
 
     $scope.applyFilter = function(pageIndex) {
         $http({
-            url: root + '/filter',
+            url: root + '/products/filter',
             method: 'GET',
             params: {
                 min: $scope.minPrice,
@@ -37,13 +38,75 @@ angular.module('eshop', []).controller('indexController', function($scope, $http
 
     $scope.deleteProduct = function(idx, id) {
         $http({
-            url: root + '/' + id,
+            url: root + '/products/' + id,
             method: 'DELETE',
             params: {}
         }).then(function(response) {
             $scope.products.splice(idx, 1);
         });
     };
+
+    $scope.loadCart = function() {
+        $http({
+            url: root + '/carts',
+            method: 'GET',
+            params: {
+                session: $scope.session
+            }
+        }).then(function(response) {
+            $scope.cart = response.data;
+            $scope.session = response.data.session;
+            console.log(response);
+        });
+    }
+
+    $scope.addToCart = function(id) {
+        $http({
+            url: root + '/carts/add/' + id,
+            method: 'PUT',
+            params: {
+                session: $scope.session
+            }
+        }).then(function(response) {
+            $scope.loadCart();
+        });
+    }
+
+    $scope.removeFromCart = function(id) {
+        $http({
+            url: root + '/carts/remove/' + id,
+            method: 'PUT',
+            params: {
+                session: $scope.session
+            }
+        }).then(function(response) {
+            $scope.loadCart();
+        });
+    }
+
+    $scope.deleteFromCart = function(id) {
+        $http({
+            url: root + '/carts/' + id,
+            method: 'DELETE',
+            params: {
+                session: $scope.session
+            }
+        }).then(function(response) {
+            $scope.loadCart();
+        });
+    }
+
+    $scope.createOrder = function() {
+        $http({
+            url: root + '/orders',
+            method: 'POST',
+            params: {
+                session: $scope.session
+            }
+        }).then(function(response) {
+            $scope.loadCart();
+        });
+    }
 
     $scope.updatePages = function() {
         $scope.pages = [];
@@ -53,4 +116,5 @@ angular.module('eshop', []).controller('indexController', function($scope, $http
     };
 
     $scope.loadProducts(0);
+    $scope.loadCart();
 });

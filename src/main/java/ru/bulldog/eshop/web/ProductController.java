@@ -7,21 +7,11 @@ import ru.bulldog.eshop.dto.ProductDTO;
 import ru.bulldog.eshop.model.Product;
 import ru.bulldog.eshop.service.ProductService;
 
-import java.util.function.Function;
+import static ru.bulldog.eshop.util.EntityUtil.PRODUCT_FACTORY;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/v1/products")
 public class ProductController {
-
-	private final static Function<Product, ProductDTO> productFactory = product -> {
-		ProductDTO productDTO = new ProductDTO();
-		productDTO.setId(product.getId());
-		productDTO.setTitle(product.getTitle());
-		productDTO.setCategory(product.getCategory().getTitle());
-		productDTO.setPrice(product.getPrice());
-
-		return productDTO;
-	};
 
 	private final ProductService productService;
 
@@ -32,7 +22,7 @@ public class ProductController {
 
 	@GetMapping
 	public Page<ProductDTO> showProducts(@RequestParam(name = "page", defaultValue = "1") int pageIndex) {
-		return productService.getPage(pageIndex - 1, 10).map(productFactory);
+		return productService.getPage(pageIndex - 1, 10).map(PRODUCT_FACTORY);
 	}
 
 	@PostMapping
@@ -49,6 +39,6 @@ public class ProductController {
 
 	@GetMapping("/filter")
 	public Page<ProductDTO> filterProducts(@RequestParam("min") double minPrice, @RequestParam("max") double maxPrice, @RequestParam(name = "page", defaultValue = "1") int pageIndex) {
-		return productService.getPageByPrice(minPrice, maxPrice, pageIndex - 1, 10).map(productFactory);
+		return productService.getPageByPrice(minPrice, maxPrice, pageIndex - 1, 10).map(PRODUCT_FACTORY);
 	}
 }
