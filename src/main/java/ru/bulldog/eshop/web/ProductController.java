@@ -7,6 +7,8 @@ import ru.bulldog.eshop.dto.ProductDTO;
 import ru.bulldog.eshop.model.Product;
 import ru.bulldog.eshop.service.ProductService;
 
+import javax.persistence.EntityNotFoundException;
+
 import static ru.bulldog.eshop.util.EntityUtil.PRODUCT_FACTORY;
 
 @RestController
@@ -23,6 +25,12 @@ public class ProductController {
 	@GetMapping
 	public Page<ProductDTO> showProducts(@RequestParam(name = "page", defaultValue = "1") int pageIndex) {
 		return productService.getPage(pageIndex - 1, 10).map(PRODUCT_FACTORY);
+	}
+
+	@GetMapping("/{id}")
+	public ProductDTO getProduct(@PathVariable long id) {
+		Product product = productService.getById(id).orElseThrow(() -> new EntityNotFoundException("Product not found, id: " + id));
+		return PRODUCT_FACTORY.apply(product);
 	}
 
 	@PostMapping

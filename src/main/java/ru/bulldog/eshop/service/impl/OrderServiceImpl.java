@@ -8,6 +8,7 @@ import ru.bulldog.eshop.model.OrderItem;
 import ru.bulldog.eshop.repository.OrderRepo;
 import ru.bulldog.eshop.service.OrderService;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +24,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Order save(Order order) {
 		return orderRepo.save(order);
+	}
+
+	@Override
+	public Optional<Order> findById(long id) {
+		return orderRepo.findById(id);
 	}
 
 	@Override

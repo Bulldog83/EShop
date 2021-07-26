@@ -16,11 +16,6 @@ public class CategoryDTO {
 		this.title = title;
 	}
 
-	public CategoryDTO(Category category) {
-		this.id = category.getId();
-		this.title = category.getTitle();
-	}
-
 	public Long getId() {
 		return id;
 	}
