@@ -33,7 +33,9 @@ public class OrderController {
 	@PostMapping
 	public void createOrder(@RequestParam UUID session) {
 		CartDTO cart = cartService.getCart(session);
-		orderService.create(cart);
-		cart.clear();
+		if (!cart.isEmpty()) {
+			orderService.create(cart);
+			cart.clear();
+		}
 	}
 }

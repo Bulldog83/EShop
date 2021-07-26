@@ -95,6 +95,10 @@ public class CartDTO {
 		items.clear();
 	}
 
+	public boolean isEmpty() {
+		return items.isEmpty() && sumTotal.equals(BigDecimal.ZERO);
+	}
+
 	private void recalculate() {
 		sumTotal = BigDecimal.ZERO;
 		items.forEach(item -> sumTotal = sumTotal.add(item.getSum()));
