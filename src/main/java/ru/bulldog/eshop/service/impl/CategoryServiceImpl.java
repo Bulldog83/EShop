@@ -1,9 +1,10 @@
-package ru.bulldog.eshop.service;
+package ru.bulldog.eshop.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bulldog.eshop.model.Category;
 import ru.bulldog.eshop.repository.CategoryRepo;
+import ru.bulldog.eshop.service.CategoryService;
 
 import java.util.Optional;
 

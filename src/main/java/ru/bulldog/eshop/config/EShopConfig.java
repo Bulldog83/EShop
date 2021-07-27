@@ -1,4 +1,4 @@
-package ru.bulldog.eshop;
+package ru.bulldog.eshop.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package ru.bulldog.eshop.service;
+package ru.bulldog.eshop.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,7 +8,10 @@ import ru.bulldog.eshop.dto.ProductDTO;
 import ru.bulldog.eshop.model.Category;
 import ru.bulldog.eshop.model.Product;
 import ru.bulldog.eshop.repository.ProductRepo;
+import ru.bulldog.eshop.service.CategoryService;
+import ru.bulldog.eshop.service.ProductService;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product create(String title, double price, long categoryId) {
+	public Product create(String title, BigDecimal price, long categoryId) {
 		Product product = new Product(title, price);
 		Category category = categoryService.getById(categoryId);
 		product.setCategory(category);

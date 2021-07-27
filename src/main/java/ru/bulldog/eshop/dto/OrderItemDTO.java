@@ -1,22 +1,16 @@
 package ru.bulldog.eshop.dto;
 
-import ru.bulldog.eshop.model.Product;
-
 import java.math.BigDecimal;
 
-public class ProductDTO {
-
+public class OrderItemDTO {
 	private Long id;
 	private String title;
+	private int count;
 	private BigDecimal price;
-	private String category;
+	private BigDecimal sum;
 
-	public ProductDTO() {}
-
-	public ProductDTO(String title, BigDecimal price, String category) {
-		this.title = title;
-		this.price = price;
-		this.category = category;
+	public OrderItemDTO() {
+		this.count = 1;
 	}
 
 	public Long getId() {
@@ -35,6 +29,14 @@ public class ProductDTO {
 		this.title = title;
 	}
 
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
 	public BigDecimal getPrice() {
 		return price;
 	}
@@ -43,11 +45,11 @@ public class ProductDTO {
 		this.price = price;
 	}
 
-	public String getCategory() {
-		return category;
+	public BigDecimal getSum() {
+		return sum;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setSum(BigDecimal sum) {
+		this.sum = sum;
 	}
 }
