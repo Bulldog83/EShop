@@ -9,7 +9,7 @@ import java.util.UUID;
 public class CartDTO {
 
 	private UUID session;
-	private List<CartItemDTO> items;
+	private List<OrderItemDTO> items;
 	private BigDecimal sumTotal;
 
 	public CartDTO() {
@@ -30,11 +30,11 @@ public class CartDTO {
 		this.session = session;
 	}
 
-	public List<CartItemDTO> getItems() {
+	public List<OrderItemDTO> getItems() {
 		return items;
 	}
 
-	public void setItems(List<CartItemDTO> items) {
+	public void setItems(List<OrderItemDTO> items) {
 		this.items = items;
 	}
 
@@ -47,7 +47,7 @@ public class CartDTO {
 	}
 
 	public boolean addItem(long itemId) {
-		Optional<CartItemDTO> cartItem = items.stream().filter(item -> item.getId() == itemId).findFirst();
+		Optional<OrderItemDTO> cartItem = items.stream().filter(item -> item.getId() == itemId).findFirst();
 		if (cartItem.isPresent()) {
 			cartItem.get().increment();
 			recalculate();
@@ -57,7 +57,7 @@ public class CartDTO {
 	}
 
 	public void addItem(ProductDTO productDTO) {
-		CartItemDTO cartItem = new CartItemDTO();
+		OrderItemDTO cartItem = new OrderItemDTO();
 		cartItem.setId(productDTO.getId());
 		cartItem.setTitle(productDTO.getTitle());
 		cartItem.setPrice(productDTO.getPrice());
