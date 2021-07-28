@@ -26,12 +26,14 @@ angular.module('eshop', []).controller('indexController', function($scope, $http
             method: 'GET',
             params: {}
         }).then(function(response) {
-            if (response.status != 404) {
+            if (response.status == 200) {
                 $scope.user = response.data;
                 $scope.authenticated = true;
             } else {
                 $scope.authenticated = false;
             }
+        }).catch(function(err) {
+            console.log(err);
         });
     }
 
