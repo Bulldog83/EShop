@@ -4,6 +4,36 @@ angular.module('eshop', []).controller('indexController', function($scope, $http
     $scope.minPrice = 0.01;
     $scope.maxPrice = 0.01;
     $scope.session = null
+    $scope.authenticated = false;
+
+    $scope.getSessionToken = function() {
+        $http({
+            url: root + '/token',
+            method: 'GET',
+            params: {}
+        }).then(function(response) {
+            $scope.sessionToken = response.data;
+            $scope.session = response.data.token;
+            $http.defaults.headers.post[response.data.headerName] = response.data.token;
+            $http.defaults.headers.put[response.data.headerName] = response.data.token;
+            console.log(response);
+        });
+    }
+
+    $scope.getCurrentUser = function() {
+        $http({
+            url: root + '/users/current',
+            method: 'GET',
+            params: {}
+        }).then(function(response) {
+            if (response.status != 404) {
+                $scope.user = response.data;
+                $scope.authenticated = true;
+            } else {
+                $scope.authenticated = false;
+            }
+        });
+    }
 
     $scope.loadProducts = function(pageIndex) {
         $http({
@@ -40,9 +70,12 @@ angular.module('eshop', []).controller('indexController', function($scope, $http
         $http({
             url: root + '/products/' + id,
             method: 'DELETE',
+            headers: {
+                [$scope.sessionToken.headerName]: $scope.sessionToken.token
+            },
             params: {}
         }).then(function(response) {
-            $scope.products.splice(idx, 1);
+            $scope.loadProducts($scope.page.number);
         });
     };
 
@@ -108,13 +141,36 @@ angular.module('eshop', []).controller('indexController', function($scope, $http
         });
     }
 
+    $scope.doLogout = function() {
+        $http({
+            url: '/logout',
+            method: 'POST',
+            params: {
+                [$scope.sessionToken.parameterName]: $scope.sessionToken.token
+            }
+        }).then(function(response) {
+            $scope.authenticated = false;
+            $scope.user = null;
+        });
+    }
+
+    $scope.hasPermission = function(name) {
+        if ($scope.user == null) {
+            return false;
+        }
+        return $scope.user.authorities.includes('ALL') ||
+               $scope.user.authorities.includes(name);
+    }
+
     $scope.updatePages = function() {
         $scope.pages = [];
         for(var i = 0; i < $scope.page.totalPages; i++) {
             $scope.pages[i] = i;
         }
-    };
+    }
 
+    $scope.getSessionToken();
+    $scope.getCurrentUser();
     $scope.loadProducts(0);
     $scope.loadCart();
 });

@@ -1,13 +1,8 @@
 package ru.bulldog.eshop.util;
 
-import ru.bulldog.eshop.dto.CategoryDTO;
-import ru.bulldog.eshop.dto.OrderDTO;
-import ru.bulldog.eshop.dto.OrderItemDTO;
-import ru.bulldog.eshop.dto.ProductDTO;
-import ru.bulldog.eshop.model.Category;
-import ru.bulldog.eshop.model.Order;
-import ru.bulldog.eshop.model.OrderItem;
-import ru.bulldog.eshop.model.Product;
+import org.springframework.security.core.GrantedAuthority;
+import ru.bulldog.eshop.dto.*;
+import ru.bulldog.eshop.model.*;
 
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -64,5 +59,17 @@ public class EntityUtil {
 		orderDTO.setItems(order.getItems().stream().map(ORDER_ITEM_DTO_FACTORY).collect(Collectors.toList()));
 
 		return orderDTO;
+	};
+
+	public final static Function<User, UserDTO> USER_DTO_FACTORY = user -> {
+		UserDTO userDTO = new UserDTO();
+		userDTO.setId(user.getId());
+		userDTO.setUsername(user.getUsername());
+		userDTO.setFirstName(user.getFirstName());
+		userDTO.setLastName(user.getLastName());
+		userDTO.setAuthorities(user.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
+
+		return userDTO;
 	};
 }

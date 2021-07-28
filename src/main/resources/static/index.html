@@ -14,15 +14,20 @@
 	<div class="container">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
-				<div class="collapse navbar-collapse">
-					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-						<li class="nav-item">
-							<a class="nav-link active" href="#">Products list</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">New product</a>
-						</li>
-					</ul>
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<a class="nav-link active" href="#">Products list</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">New product</a>
+					</li>
+				</ul>
+				<div class="d-flex" ng-show="authenticated">
+					<span class="lead m-2">{{user.firstName}} {{user.lastName}}</span>
+					<button class="btn btn-primary" ng-click="doLogout()">Logout</button>
+				</div>
+				<div class="d-flex justify-content-end" ng-show="!authenticated">
+					<a href="/login" class="btn btn-primary">Login</a>
 				</div>
 			</div>
 		</nav>
@@ -65,7 +70,7 @@
 							<i class="bi bi-basket-fill"></i>
 						</button>
 					</td>
-					<td>
+					<td ng-show="hasPermission('MANAGE_PRODUCTS')">
 						<button type="button" class="btn btn-outline-danger" ng-click="deleteProduct($index, product.id)" title="Delete">
 							<i class="bi bi-x-square-fill"></i>
 						</button>
@@ -90,7 +95,7 @@
 				</li>
 			</ul>
 		</nav>
-		<div ng-if="cart.empty == false" aria-label="Cart">
+		<div ng-show="cart.empty == false" aria-label="Cart">
 			<h2>Cart</h2>
 			<table class="table">
 				<thead class="table-secondary">
