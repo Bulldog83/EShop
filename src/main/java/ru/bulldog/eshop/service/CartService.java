@@ -30,6 +30,10 @@ public class CartService {
 		return cart;
 	}
 
+	public void registerCart(CartDTO cartDTO) {
+		carts.put(cartDTO.getSession(), cartDTO);
+	}
+
 	public void removeCart(UUID session) {
 		carts.remove(session);
 	}

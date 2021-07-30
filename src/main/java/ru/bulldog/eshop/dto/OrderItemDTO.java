@@ -3,11 +3,12 @@ package ru.bulldog.eshop.dto;
 import java.math.BigDecimal;
 
 public class OrderItemDTO {
+
 	private Long id;
 	private String title;
-	private int count;
 	private BigDecimal price;
 	private BigDecimal sum;
+	private int count;
 
 	public OrderItemDTO() {
 		this.count = 1;
@@ -29,20 +30,13 @@ public class OrderItemDTO {
 		this.title = title;
 	}
 
-	public int getCount() {
-		return count;
-	}
-
-	public void setCount(int count) {
-		this.count = count;
-	}
-
 	public BigDecimal getPrice() {
 		return price;
 	}
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+		recalculate();
 	}
 
 	public BigDecimal getSum() {
@@ -51,5 +45,31 @@ public class OrderItemDTO {
 
 	public void setSum(BigDecimal sum) {
 		this.sum = sum;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+		recalculate();
+	}
+
+	public void addCount(int value) {
+		count += value;
+		recalculate();
+	}
+
+	public void increment() {
+		addCount(1);
+	}
+
+	public void decrement() {
+		addCount(-1);
+	}
+
+	private void recalculate() {
+		this.sum = price.multiply(BigDecimal.valueOf(count));
 	}
 }
