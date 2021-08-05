@@ -3,13 +3,13 @@ package ru.bulldog.eshop.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bulldog.eshop.dto.CartDTO;
-import ru.bulldog.eshop.dto.OrderDTO;
 import ru.bulldog.eshop.model.Order;
-import ru.bulldog.eshop.model.OrderItem;
 import ru.bulldog.eshop.repository.OrderRepo;
 import ru.bulldog.eshop.service.OrderService;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static ru.bulldog.eshop.util.EntityUtil.ORDER_ITEM_FACTORY;
@@ -27,6 +27,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Order save(Order order) {
 		return orderRepo.save(order);
+	}
+
+	@Override
+	public List<Order> findBySession(UUID uuid) {
+		return orderRepo.findBySessionId(uuid);
 	}
 
 	@Override
