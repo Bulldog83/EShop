@@ -90,6 +90,18 @@ public class CartDTO {
 		});
 	}
 
+	public void merge(CartDTO oldCart) {
+		oldCart.getItems().forEach(item -> {
+			int idx = items.indexOf(item);
+			if (idx >= 0) {
+				items.get(idx).addCount(item.getCount());
+			} else {
+				items.add(item);
+			}
+		});
+		recalculate();
+	}
+
 	public void clear() {
 		sumTotal = BigDecimal.ZERO;
 		items.clear();

@@ -64,6 +64,7 @@ public class EntityUtil {
 	public final static Function<User, UserDTO> USER_DTO_FACTORY = user -> {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setId(user.getId());
+		userDTO.setSessionId(user.getSessionId());
 		userDTO.setUsername(user.getUsername());
 		userDTO.setFirstName(user.getFirstName());
 		userDTO.setLastName(user.getLastName());

@@ -1,6 +1,7 @@
 package ru.bulldog.eshop.dto;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class OrderItemDTO {
 
@@ -11,6 +12,8 @@ public class OrderItemDTO {
 	private int count;
 
 	public OrderItemDTO() {
+		this.price = BigDecimal.ZERO;
+		this.sum = BigDecimal.ZERO;
 		this.count = 1;
 	}
 
@@ -71,5 +74,18 @@ public class OrderItemDTO {
 
 	private void recalculate() {
 		this.sum = price.multiply(BigDecimal.valueOf(count));
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		OrderItemDTO that = (OrderItemDTO) o;
+		return id.equals(that.id) && title.equals(that.title);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, title);
 	}
 }
