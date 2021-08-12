@@ -1,0 +1,108 @@
+const rootPath = 'http://' + location.host;
+const requestPath = rootPath + '/api/v1';
+
+$eshop = angular.module('eshop', ['ngStorage']).run(function($rootScope, $http, $localStorage) {
+    $rootScope.user = {};
+
+    $rootScope.getSession = function() {
+       $http({
+           url: rootPath + '/session',
+           method: 'GET',
+           params: {}
+       }).then(function(response) {
+           $http.defaults.headers.common['X-SESSION'] = response.data;
+           $localStorage.activeSession = response.data
+           $rootScope.user.session = response.data;
+           console.log(response);
+       });
+    }
+
+    $rootScope.mergeCart = function(session) {
+        $http({
+            url: requestPath + '/carts/merge',
+            method: 'PUT',
+            params: {
+                session: session
+            }
+        });
+    }
+
+    $rootScope.clearUser = function () {
+        delete $localStorage.activeUser;
+        $http.defaults.headers.common.Authorization = '';
+        $rootScope.user.authenticated = false;
+        $rootScope.user.authorities = null;
+        $rootScope.user.username = null;
+        $rootScope.user.password = null;
+    };
+
+    $rootScope.doLogout = function() {
+        $rootScope.clearUser();
+        $rootScope.getSession();
+    }
+
+    $rootScope.doLogin = function() {
+        $http
+            .post(rootPath + '/login', $rootScope.user)
+            .then(function successCallback(response) {
+                if (response.data.token) {
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                    $localStorage.activeUser = {
+                        firstname: response.data.firstname,
+                        lastname: response.data.lastname,
+                        token: response.data.token,
+                        session: response.data.session,
+                        authorities: response.data.authorities
+                    };
+                    var session = $rootScope.user.session;
+                    $http.defaults.headers.common['X-SESSION'] = response.data.session;
+                    $rootScope.user.firstname = response.data.firstname;
+                    $rootScope.user.lastname = response.data.lastname;
+                    $rootScope.user.session = response.data.session;
+                    $rootScope.user.authorities = response.data.authorities;
+                    $rootScope.user.authenticated = true;
+                    $localStorage.activeSession = null;
+                    $rootScope.user.username = null;
+                    $rootScope.user.password = null;
+
+                    $rootScope.mergeCart(session);
+                }
+            }, function errorCallback(response) {
+                console.log(response);
+            });
+    }
+
+    $rootScope.checkLogin = function() {
+        $http
+            .get(rootPath + '/login')
+            .then(function onSuccess(response) {
+                $http.defaults.headers.common['X-SESSION'] = $localStorage.activeUser.session;
+                $rootScope.user.firstname = $localStorage.activeUser.firstname;
+                $rootScope.user.lastname = $localStorage.activeUser.lastname;
+                $rootScope.user.session = $localStorage.activeUser.session;
+                $rootScope.user.authorities = $localStorage.activeUser.authorities;
+                $rootScope.user.authenticated = true;
+            }, function onError(response) {
+                $rootScope.clearUser();
+                $rootScope.getSession();
+            });
+    }
+
+    $rootScope.hasPermission = function(name) {
+        if ($rootScope.user.authorities == null) {
+            return false;
+        }
+        return $rootScope.user.authorities.includes('ALL') ||
+               $rootScope.user.authorities.includes(name);
+    }
+
+    if ($localStorage.activeUser) {
+        $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.activeUser.token;
+        $rootScope.checkLogin();
+    } else if ($localStorage.activeSession) {
+        $http.defaults.headers.common['X-SESSION'] = $localStorage.activeSession;
+        $rootScope.user.session = $localStorage.activeSession;
+    } else {
+        $rootScope.getSession();
+    }
+});
