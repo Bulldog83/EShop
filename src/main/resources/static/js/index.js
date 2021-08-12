@@ -122,7 +122,6 @@ angular.module('eshop', ['ngStorage']).controller('indexController', function($s
     }
 
     $scope.loadOrders = function() {
-        console.log($http.defaults.headers.common)
         $http.get(requestPath + '/orders')
             .then(function onSuccess(response) {
                 $scope.orders = response.data;

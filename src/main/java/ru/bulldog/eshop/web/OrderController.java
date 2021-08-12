@@ -41,7 +41,6 @@ public class OrderController {
 
 	@GetMapping("/{id}")
 	public OrderDTO getOrder(@PathVariable long id) {
-		CsrfToken token;
 		Order order = orderService.findById(id).orElseThrow(() -> new EntityNotFoundException("Order not found, id: " + id));
 		return ORDER_FACTORY.apply(order);
 	}
