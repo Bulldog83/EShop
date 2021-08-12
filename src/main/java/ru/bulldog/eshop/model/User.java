@@ -16,6 +16,8 @@ public class User implements UserDetails {
 	@Column(name = "raw_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(name = "session_id")
+	private UUID sessionId;
 	@Column
 	private String username;
 	@Column
@@ -59,6 +61,14 @@ public class User implements UserDetails {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public UUID getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(UUID sessionId) {
+		this.sessionId = sessionId;
 	}
 
 	@Override

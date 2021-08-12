@@ -6,7 +6,10 @@ import ru.bulldog.eshop.dto.CartDTO;
 import ru.bulldog.eshop.service.CartService;
 import ru.bulldog.eshop.service.ProductService;
 import ru.bulldog.eshop.util.EntityUtil;
+import ru.bulldog.eshop.util.SessionUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 import java.util.UUID;
 
 import static ru.bulldog.eshop.util.EntityUtil.PRODUCT_FACTORY;
@@ -25,30 +28,46 @@ public class CartController {
 	}
 
 	@GetMapping
-	public CartDTO getCart(@RequestParam(required = false) UUID session) {
-		if (session == null) {
-			session = UUID.randomUUID();
+	public CartDTO getCart(HttpServletRequest request) {
+		Optional<UUID> sessionOptional = SessionUtil.getSession(request);
+		if (sessionOptional.isPresent()) {
+			return cartService.getCart(sessionOptional.get());
 		}
-		return cartService.getCart(session);
+		return cartService.getCart(UUID.randomUUID());
 	}
 
 	@PutMapping("/add/{id}")
-	public void addItem(@RequestParam UUID session, @PathVariable long id) {
-		CartDTO cart = cartService.getCart(session);
-		if (!cart.addItem(id)) {
-			productService.getById(id).ifPresent(product -> cart.addItem(PRODUCT_FACTORY.apply(product)));
-		}
+	public void addItem(HttpServletRequest request, @PathVariable long id) {
+		SessionUtil.getSession(request).ifPresent(session -> {
+			CartDTO cart = cartService.getCart(session);
+			if (!cart.addItem(id)) {
+				productService.getById(id).ifPresent(product -> cart.addItem(PRODUCT_FACTORY.apply(product)));
+			}
+		});
 	}
 
 	@PutMapping("/remove/{id}")
-	public void removeItem(@RequestParam UUID session, @PathVariable long id) {
-		CartDTO cart = cartService.getCart(session);
-		cart.removeItem(id);
+	public void removeItem(HttpServletRequest request, @PathVariable long id) {
+		SessionUtil.getSession(request).ifPresent(session -> {
+			CartDTO cart = cartService.getCart(session);
+			cart.removeItem(id);
+		});
 	}
 
-	@DeleteMapping("/{id}")
-	public void deleteItem(@RequestParam UUID session, @PathVariable long id) {
-		CartDTO cart = cartService.getCart(session);
-		cart.deleteItem(id);
+	@PutMapping("/delete/{id}")
+	public void deleteItem(HttpServletRequest request, @PathVariable long id) {
+		SessionUtil.getSession(request).ifPresent(session -> {
+			CartDTO cart = cartService.getCart(session);
+			cart.deleteItem(id);
+		});
+	}
+
+	@PutMapping("/merge")
+	public void mergeCarts(HttpServletRequest request, @RequestParam("session") UUID oldSession) {
+		SessionUtil.getSession(request).ifPresent(session -> {
+			CartDTO cart = cartService.getCart(session);
+			CartDTO oldCart = cartService.getCart(oldSession);
+			cart.merge(oldCart);
+		});
 	}
 }

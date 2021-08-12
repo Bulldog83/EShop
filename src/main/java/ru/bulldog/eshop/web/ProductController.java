@@ -6,8 +6,14 @@ import org.springframework.web.bind.annotation.*;
 import ru.bulldog.eshop.dto.ProductDTO;
 import ru.bulldog.eshop.model.Product;
 import ru.bulldog.eshop.service.ProductService;
+import ru.bulldog.eshop.util.JwtToken;
+import ru.bulldog.eshop.util.JwtTokenUtil;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.Optional;
+import java.util.Set;
 
 import static ru.bulldog.eshop.util.EntityUtil.PRODUCT_FACTORY;
 

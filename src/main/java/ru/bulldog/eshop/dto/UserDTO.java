@@ -1,9 +1,11 @@
 package ru.bulldog.eshop.dto;
 
 import java.util.Set;
+import java.util.UUID;
 
 public class UserDTO {
 	private Long id;
+	private UUID sessionId;
 	private String username;
 	private String firstName;
 	private String lastName;
@@ -17,6 +19,14 @@ public class UserDTO {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public UUID getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(UUID sessionId) {
+		this.sessionId = sessionId;
 	}
 
 	public String getUsername() {

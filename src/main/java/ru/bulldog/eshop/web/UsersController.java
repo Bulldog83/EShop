@@ -12,14 +12,4 @@ import static ru.bulldog.eshop.util.EntityUtil.USER_DTO_FACTORY;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UsersController {
-
-	@GetMapping("/current")
-	public ResponseEntity<?> getCurrentUser() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (principal instanceof User) {
-			return new ResponseEntity<>(USER_DTO_FACTORY.apply((User) principal), HttpStatus.OK);
-		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}
-}
+public class UsersController {}
