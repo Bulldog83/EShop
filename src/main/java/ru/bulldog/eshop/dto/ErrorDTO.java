@@ -1,23 +1,27 @@
 package ru.bulldog.eshop.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ErrorDTO {
 
-	private String message;
+	private List<String> errors;
 	private Date timestamp;
 
-	public ErrorDTO(String message) {
+	public ErrorDTO() {
+		this.errors = new ArrayList<>();
 		this.timestamp = new Date();
-		this.message = message;
 	}
 
-	public String getMessage() {
-		return message;
+	public ErrorDTO(String message) {
+		this();
+		this.errors.add(message);
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public ErrorDTO(List<String> errors) {
+		this.timestamp = new Date();
+		this.errors = errors;
 	}
 
 	public Date getTimestamp() {
@@ -26,5 +30,13 @@ public class ErrorDTO {
 
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public List<String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
 	}
 }

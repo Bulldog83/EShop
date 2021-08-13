@@ -11,7 +11,7 @@ import ru.bulldog.eshop.service.CategoryService;
 
 import javax.persistence.EntityNotFoundException;
 
-import static ru.bulldog.eshop.util.EntityUtil.CATEGORY_FACTORY;
+import static ru.bulldog.eshop.util.DTOConverter.CATEGORY_TO_DTO_FACTORY;
 
 @RestController
 @RequestMapping("/api/v1/categories")
@@ -27,6 +27,6 @@ public class CategoryController {
 	@GetMapping("/{id}")
 	public CategoryDTO getCategory(@PathVariable long id) {
 		Category category = categoryService.findById(id).orElseThrow(() -> new EntityNotFoundException("Category not found, id: " + id));
-		return CATEGORY_FACTORY.apply(category);
+		return CATEGORY_TO_DTO_FACTORY.apply(category);
 	}
 }

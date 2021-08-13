@@ -16,12 +16,12 @@
 	<div class="container">
 		<ng-include src="'/fragments/navigation.html'"></ng-include>
 		<h3>Products</h3>
-		<form class="row" action="#">
+		<form class="row my-1 mx-auto" action="#">
 			<div class="input-group">
 				<span class="input-group-text">Min and Max Price</span>
 				<input class="form-control" type="number" step=".01" name="min" ng-model="minPrice">
 				<input class="form-control" type="number" step=".01" name="max" ng-model="maxPrice">
-				<button type="button" class="btn btn-primary" ng-click="applyFilter(0)">Apply</button>
+				<button type="button" class="btn btn-primary" ng-click="applyFilter()">Apply</button>
 			</div>
 		</form>
 		<table class="table">

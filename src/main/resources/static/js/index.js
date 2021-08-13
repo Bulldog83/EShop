@@ -20,14 +20,13 @@ $eshop.controller('indexController', function($rootScope, $scope, $http) {
         });
     };
 
-    $scope.applyFilter = function(pageIndex) {
+    $scope.applyFilter = function() {
         $http({
             url: requestPath + '/products/filter',
             method: 'GET',
             params: {
                 min: $scope.minPrice,
-                max: $scope.maxPrice,
-                page: pageIndex + 1
+                max: $scope.maxPrice
             }
         }).then(function(response) {
             $scope.filtered = true;
@@ -37,12 +36,10 @@ $eshop.controller('indexController', function($rootScope, $scope, $http) {
     };
 
     $scope.deleteProduct = function(idx, id) {
-        $http({
-            url: requestPath + '/products/' + id,
-            method: 'DELETE'
-        }).then(function(response) {
-            $scope.loadProducts($scope.page.number);
-        });
+        $http.delete(requestPath + '/products/' + id)
+            .then(function(response) {
+                $scope.loadProducts($scope.page.number);
+            });
     };
 
     $scope.addToCart = function(id) {

@@ -39,15 +39,6 @@ $eshop.controller('cartController', function($rootScope, $scope, $http) {
         });
     }
 
-    $scope.createOrder = function() {
-        $http({
-            url: requestPath + '/orders',
-            method: 'POST'
-        }).then(function(response) {
-            $scope.loadCart();
-        });
-    }
-
     $rootScope.mergeCart = function(session) {
         $http({
             url: requestPath + '/carts/merge',

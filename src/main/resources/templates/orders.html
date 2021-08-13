@@ -30,7 +30,8 @@
 			</tr>
 		</tbody>
 	</table>
-	<p ng-show="!orders">Заказы отсутствуют.</p>
+	<p ng-show="isAuthenticated() && (!orders || orders.empty)">Заказы отсутствуют.</p>
+	<p ng-show="!isAuthenticated()">Для просмотра заказов необходимо авторизоваться.</p>
 </div>
 </body>
 </html>

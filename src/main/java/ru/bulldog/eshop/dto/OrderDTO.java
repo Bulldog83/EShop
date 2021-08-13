@@ -9,6 +9,8 @@ import java.util.UUID;
 public class OrderDTO {
 	private Long id;
 	private UUID sessionId;
+	private String address;
+	private String phone;
 	private BigDecimal sumTotal;
 	private LocalDateTime created;
 	private List<OrderItemDTO> items;
@@ -31,6 +33,22 @@ public class OrderDTO {
 
 	public void setSessionId(UUID sessionId) {
 		this.sessionId = sessionId;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public BigDecimal getSumTotal() {

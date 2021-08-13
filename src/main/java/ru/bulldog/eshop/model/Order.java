@@ -18,6 +18,10 @@ public class Order {
 	private Long id;
 	@Column(name = "session")
 	private UUID sessionId;
+	@Column
+	private String address;
+	@Column
+	private String phone;
 	@Column(name = "sum")
 	private BigDecimal sumTotal;
 	@Column
@@ -54,6 +58,22 @@ public class Order {
 
 	public void setSessionId(UUID sessionId) {
 		this.sessionId = sessionId;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public List<OrderItem> getItems() {

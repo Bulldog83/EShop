@@ -6,16 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.bulldog.eshop.dto.ProductDTO;
 import ru.bulldog.eshop.model.Product;
 import ru.bulldog.eshop.service.ProductService;
-import ru.bulldog.eshop.util.JwtToken;
-import ru.bulldog.eshop.util.JwtTokenUtil;
 
 import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpServletRequest;
 
-import java.util.Optional;
-import java.util.Set;
-
-import static ru.bulldog.eshop.util.EntityUtil.PRODUCT_FACTORY;
+import static ru.bulldog.eshop.util.DTOConverter.PRODUCT_TO_DTO_FACTORY;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -30,13 +24,13 @@ public class ProductController {
 
 	@GetMapping
 	public Page<ProductDTO> showProducts(@RequestParam(name = "page", defaultValue = "1") int pageIndex) {
-		return productService.getPage(pageIndex - 1, 10).map(PRODUCT_FACTORY);
+		return productService.getPage(pageIndex - 1, 10).map(PRODUCT_TO_DTO_FACTORY);
 	}
 
 	@GetMapping("/{id}")
 	public ProductDTO getProduct(@PathVariable long id) {
 		Product product = productService.getById(id).orElseThrow(() -> new EntityNotFoundException("Product not found, id: " + id));
-		return PRODUCT_FACTORY.apply(product);
+		return PRODUCT_TO_DTO_FACTORY.apply(product);
 	}
 
 	@PostMapping
@@ -53,6 +47,6 @@ public class ProductController {
 
 	@GetMapping("/filter")
 	public Page<ProductDTO> filterProducts(@RequestParam("min") double minPrice, @RequestParam("max") double maxPrice, @RequestParam(name = "page", defaultValue = "1") int pageIndex) {
-		return productService.getPageByPrice(minPrice, maxPrice, pageIndex - 1, 10).map(PRODUCT_FACTORY);
+		return productService.getPageByPrice(minPrice, maxPrice, pageIndex - 1, 10).map(PRODUCT_TO_DTO_FACTORY);
 	}
 }

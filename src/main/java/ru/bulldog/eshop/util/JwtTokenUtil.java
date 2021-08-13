@@ -1,14 +1,10 @@
 package ru.bulldog.eshop.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import ru.bulldog.eshop.model.User;
 
@@ -60,8 +56,8 @@ public class JwtTokenUtil {
 				jwtToken.setAuthorities(new HashSet<>(authorities));
 				jwtToken.setSession(UUID.fromString(sessionId));
 				return Optional.of(jwtToken);
-			} catch (ExpiredJwtException expired) {
-				logger.debug("The token has expired.");
+			} catch (JwtException jwe) {
+				logger.warn("Invalid token: " + jwe.getMessage());
 			} catch (Exception ex) {
 				logger.error("Decode token error.", ex);
 			}
@@ -69,7 +65,7 @@ public class JwtTokenUtil {
 		return Optional.empty();
 	}
 
-	private Claims decodeClaims(String token) throws ExpiredJwtException {
+	private Claims decodeClaims(String token) throws JwtException {
 		return Jwts.parser()
 				.setSigningKey(secret)
 				.parseClaimsJws(token)

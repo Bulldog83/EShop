@@ -5,14 +5,12 @@ import org.springframework.web.bind.annotation.*;
 import ru.bulldog.eshop.dto.CartDTO;
 import ru.bulldog.eshop.service.CartService;
 import ru.bulldog.eshop.service.ProductService;
-import ru.bulldog.eshop.util.EntityUtil;
 import ru.bulldog.eshop.util.SessionUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 import java.util.UUID;
 
-import static ru.bulldog.eshop.util.EntityUtil.PRODUCT_FACTORY;
+import static ru.bulldog.eshop.util.DTOConverter.PRODUCT_TO_DTO_FACTORY;
 
 @RestController
 @RequestMapping("/api/v1/carts")
@@ -29,11 +27,8 @@ public class CartController {
 
 	@GetMapping
 	public CartDTO getCart(HttpServletRequest request) {
-		Optional<UUID> sessionOptional = SessionUtil.getSession(request);
-		if (sessionOptional.isPresent()) {
-			return cartService.getCart(sessionOptional.get());
-		}
-		return cartService.getCart(UUID.randomUUID());
+		return SessionUtil.getSession(request).map(cartService::getCart)
+				.orElseGet(() -> cartService.getCart(UUID.randomUUID()));
 	}
 
 	@PutMapping("/add/{id}")
@@ -41,7 +36,7 @@ public class CartController {
 		SessionUtil.getSession(request).ifPresent(session -> {
 			CartDTO cart = cartService.getCart(session);
 			if (!cart.addItem(id)) {
-				productService.getById(id).ifPresent(product -> cart.addItem(PRODUCT_FACTORY.apply(product)));
+				productService.getById(id).ifPresent(product -> cart.addItem(PRODUCT_TO_DTO_FACTORY.apply(product)));
 			}
 		});
 	}
