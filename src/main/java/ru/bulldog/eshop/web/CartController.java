@@ -65,4 +65,12 @@ public class CartController {
 			cart.merge(oldCart);
 		});
 	}
+
+	@PutMapping("/clear")
+	public void clearCart(HttpServletRequest request) {
+		SessionUtil.getSession(request).ifPresent(session -> {
+			CartDTO cart = cartService.getCart(session);
+			cart.clear();
+		});
+	}
 }

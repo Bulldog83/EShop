@@ -39,6 +39,15 @@ $eshop.controller('cartController', function($rootScope, $scope, $http) {
         });
     }
 
+    $scope.clearCart = function() {
+        $http({
+            url: requestPath + '/carts/clear',
+            method: 'PUT'
+        }).then(function(response) {
+            $scope.loadCart();
+        });
+    }
+
     $rootScope.mergeCart = function(session) {
         $http({
             url: requestPath + '/carts/merge',

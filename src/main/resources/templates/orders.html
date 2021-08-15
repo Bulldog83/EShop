@@ -19,14 +19,26 @@
 	<table class="table" ng-show="orders">
 		<thead>
 			<tr>
-				<td>ID</td>
-				<td>Цена</td>
+				<th>ID</th>
+				<th>Items</th>
+				<th>Sum</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="item in orders">
-				<td>{{item.id}}</td>
-				<td>{{item.sumTotal}}</td>
+			<tr ng-repeat="order in orders">
+				<td>{{order.id}}</td>
+				<td>
+					<table>
+						<tbody>
+							<tr ng-repeat="item in order.items">
+								<td class="p-0 px-3 border-0">{{item.title}}</td>
+								<td class="p-0 px-3 border-0">{{item.count}}</td>
+								<td class="p-0 px-3 border-0">{{item.sum}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td>{{order.sumTotal}}</td>
 			</tr>
 		</tbody>
 	</table>

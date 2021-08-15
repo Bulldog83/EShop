@@ -6,6 +6,7 @@ $eshop.controller('singleOrderController', function($rootScope, $scope, $http) {
             method: 'GET'
         }).then(function(response) {
             console.log(response);
+            console.log($rootScope.user.session);
             $scope.orderData = {
                 sessionId: $rootScope.user.session,
                 items: response.data.items,
@@ -25,6 +26,7 @@ $eshop.controller('singleOrderController', function($rootScope, $scope, $http) {
                 }
             }, function onError(response) {
                 console.log(response);
+                $scope.errors = response.data.errors;
             });
     }
 

@@ -18,14 +18,12 @@ public class Validator {
 		ORDER_VALIDATOR = orderDTO -> {
 			ValidationResult result = new ValidationResult();
 			String address = orderDTO.getAddress();
-			if (address == null) {
-				result.addError("Address can't be null.");
-			} else if (address.trim().equals("")) {
+			if (address == null || address.trim().equals("")) {
 				result.addError("Address can't be empty.");
 			}
 			String phone = orderDTO.getPhone();
 			if (phone == null) {
-				result.addError("Phone can't be null.");
+				result.addError("Phone can't be empty.");
 			} else {
 				phone = phone.trim();
 				if (phone.equals("")) {
