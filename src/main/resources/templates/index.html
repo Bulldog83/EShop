@@ -16,12 +16,16 @@
 	<div class="container">
 		<ng-include src="'/fragments/navigation.html'"></ng-include>
 		<h3>Products</h3>
-		<form class="row my-1 mx-auto" action="#">
+		<form class="row my-1 mx-auto" ng-submit="loadProducts()">
+			<div class="input-group mb-1">
+				<span class="input-group-text">Product title</span>
+				<input id="title" type="text" class="form-control" ng-model="products_data.title" />
+			</div>
 			<div class="input-group">
 				<span class="input-group-text">Min and Max Price</span>
-				<input class="form-control" type="number" step=".01" name="min" ng-model="minPrice">
-				<input class="form-control" type="number" step=".01" name="max" ng-model="maxPrice">
-				<button type="button" class="btn btn-primary" ng-click="applyFilter()">Apply</button>
+				<input class="form-control" type="number" step=".01" ng-model="products_data.minPrice">
+				<input class="form-control" type="number" step=".01" ng-model="products_data.maxPrice">
+				<button type="submit" class="btn btn-primary ml-1">Apply</button>
 			</div>
 		</form>
 		<table class="table">
@@ -65,17 +69,13 @@
 		<nav aria-label="page navigation">
 			<ul class="pagination">
 				<li ng-class="['page-item', {'disabled': page.first}]">
-					<a class="page-link" href="#" aria-label="Previous" ng-click="filtered ? applyFilter(page.number - 1) : loadProducts(page.number - 1)">
-						<span aria-hidden="true">&laquo;</span>
-					</a>
+					<button class="page-link" aria-label="Previous" ng-click="loadPage(products_data.page - 1)">&laquo;</button>
 				</li>
 				<li ng-repeat="pIdx in pages" ng-class="['page-item', {'active': page.number==pIdx}]">
-					<a class="page-link" href="#" ng-click="filtered ? applyFilter(pIdx) : loadProducts(pIdx)">{{pIdx + 1}}</a>
+					<button class="page-link" ng-click="loadPage(pIdx + 1)">{{pIdx + 1}}</button>
 				</li>
 				<li ng-class="['page-item', {'disabled': page.last}]">
-					<a class="page-link" href="#" aria-label="Next" ng-click="filtered ? applyFilter(page.number + 1) : loadProducts(page.number + 1)">
-						<span aria-hidden="true">&raquo;</span>
-					</a>
+					<button class="page-link" aria-label="Next" ng-click="loadPage(products_data.page + 1)">&raquo;</button>
 				</li>
 			</ul>
 		</nav>

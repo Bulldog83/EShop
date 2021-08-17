@@ -3,6 +3,7 @@ package ru.bulldog.eshop.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.bulldog.eshop.dto.ProductDTO;
 import ru.bulldog.eshop.model.Category;
@@ -38,36 +39,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Page<Product> getPage(int index, int elements) {
-		return repository.findAll(PageRequest.of(index, elements));
-	}
-
-	@Override
-	public List<Product> findByPrice(double min, double max) {
-		if (min <= 0.0 && max <= 0.0) {
-			return getAll();
-		}
-		if (min <= 0.0) {
-			return repository.findAllByPriceLessThanEqual(max);
-		}
-		if (max <= 0.0) {
-			return repository.findAllByPriceGreaterThanEqual(min);
-		}
-		return repository.findAllByPriceGreaterThanEqualAndPriceLessThanEqual(min, max);
-	}
-
-	@Override
-	public Page<Product> getPageByPrice(double min, double max, int index, int elements) {
-		if (min <= 0.0 && max <= 0.0) {
-			return getPage(index, elements);
-		}
-		if (min <= 0.0) {
-			return repository.findAllByPriceLessThanEqual(max, PageRequest.of(index, elements));
-		}
-		if (max <= 0.0) {
-			return repository.findAllByPriceGreaterThanEqual(min, PageRequest.of(index, elements));
-		}
-		return repository.findAllByPriceGreaterThanEqualAndPriceLessThanEqual(min, max, PageRequest.of(index, elements));
+	public Page<Product> getPage(int index, int elements, Specification<Product> specification) {
+		return repository.findAll(specification, PageRequest.of(index, elements));
 	}
 
 	@Override
