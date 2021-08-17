@@ -1,6 +1,5 @@
 package ru.bulldog.eshop.service;
 
-import ru.bulldog.eshop.dto.CartDTO;
 import ru.bulldog.eshop.dto.OrderDTO;
 import ru.bulldog.eshop.model.Order;
 
@@ -10,7 +9,7 @@ import java.util.UUID;
 
 public interface OrderService {
 	Optional<Order> findById(long id);
-	Order create(CartDTO cart);
+	Order create(OrderDTO orderDTO);
 	Order save(Order order);
 	List<Order> findBySession(UUID uuid);
 }

@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.bulldog.eshop.dto.ErrorDTO;
+import ru.bulldog.eshop.errors.EntityValidationException;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -21,9 +22,15 @@ public class HandleExceptionController {
 	public ResponseEntity<?> onEntityNotFound(EntityNotFoundException ex) {
 		return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.NOT_FOUND);
 	}
+
 	@ExceptionHandler
 	public ResponseEntity<?> onBadCredentials(BadCredentialsException ex) {
 		return new ResponseEntity<>(new ErrorDTO("Invalid username or password"), HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<?> onValidationError(EntityValidationException ex) {
+		return new ResponseEntity<>(new ErrorDTO(ex.getErrors()), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler
