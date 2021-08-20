@@ -1,4 +1,4 @@
-$eshop.controller('singleOrderController', function($rootScope, $scope, $http) {
+$eshop.controller('newOrderController', function($rootScope, $scope, $http, $window) {
 
     $scope.initOrder = function() {
         $http({
@@ -6,7 +6,6 @@ $eshop.controller('singleOrderController', function($rootScope, $scope, $http) {
             method: 'GET'
         }).then(function(response) {
             console.log(response);
-            console.log($rootScope.user.session);
             $scope.orderData = {
                 sessionId: $rootScope.user.session,
                 items: response.data.items,
@@ -20,9 +19,9 @@ $eshop.controller('singleOrderController', function($rootScope, $scope, $http) {
             .then(function onSuccess(response) {
                 alert("Order successfully created.");
                 if ($rootScope.isAuthenticated()) {
-                    window.location = '/orders';
+                    $window.location = '/#!/orders';
                 } else {
-                    window.location = '/';
+                    $window.location = '/';
                 }
             }, function onError(response) {
                 console.log(response);

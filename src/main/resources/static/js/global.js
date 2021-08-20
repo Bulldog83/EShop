@@ -1,139 +1,173 @@
 const rootPath = 'http://' + location.host;
 const requestPath = rootPath + '/api/v1';
 
-$eshop = angular.module('eshop', ['ngStorage']).run(function($rootScope, $http, $localStorage) {
-    $rootScope.user = {};
+(function ($localStorage) {
+    'use strict';
 
-    $rootScope.onLoginActions = [];
-    $rootScope.onLogoutActions = [];
+    angular
+        .module('eshop', ['ngRoute', 'ngStorage'])
+        .config(config)
+        .run(run);
 
-    $rootScope.registerOnLogin = function(action) {
-        $rootScope.onLoginActions.push(action);
-    }
-
-    $rootScope.registerOnLogout = function(action) {
-        $rootScope.onLogoutActions.push(action);
-    }
-
-    $rootScope.doOnLogin = function() {
-        $rootScope.onLoginActions.forEach(function(action, idx, array) {
-            action();
-        });
-    }
-
-    $rootScope.doOnLogout = function() {
-        $rootScope.onLogoutActions.forEach(function(action, idx, array) {
-            action();
-        });
-    }
-
-    $rootScope.getSession = function() {
-       $http({
-           url: rootPath + '/session',
-           method: 'GET',
-           params: {}
-       }).then(function(response) {
-           $http.defaults.headers.common['X-SESSION'] = response.data;
-           $localStorage.activeSession = response.data
-           $rootScope.user.session = response.data;
-           console.log(response);
-       });
-    }
-
-    $rootScope.mergeCart = function(session) {
-        $http({
-            url: requestPath + '/carts/merge',
-            method: 'PUT',
-            params: {
-                session: session
-            }
-        });
-    }
-
-    $rootScope.clearUser = function () {
-        delete $localStorage.activeUser;
-        delete $rootScope.authToken;
-        delete $rootScope.user.authorities;
-        delete $rootScope.user.username;
-        delete $rootScope.user.password;
-
-        $http.defaults.headers.common.Authorization = '';
-    };
-
-    $rootScope.doLogout = function() {
-        $rootScope.clearUser();
-        $rootScope.getSession();
-        $rootScope.doOnLogout();
-    }
-
-    $rootScope.doLogin = function() {
-        $http
-            .post(rootPath + '/login', $rootScope.user)
-            .then(function successCallback(response) {
-                if (response.data.token) {
-                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                    $http.defaults.headers.common['X-SESSION'] = response.data.session;
-                    $localStorage.activeUser = {
-                        firstname: response.data.firstname,
-                        lastname: response.data.lastname,
-                        token: response.data.token,
-                        session: response.data.session,
-                        authorities: response.data.authorities
-                    };
-                    delete($localStorage.activeSession);
-                    var session = $rootScope.user.session;
-                    $rootScope.authToken = response.data.token;
-                    $rootScope.user.firstname = response.data.firstname;
-                    $rootScope.user.lastname = response.data.lastname;
-                    $rootScope.user.session = response.data.session;
-                    $rootScope.user.authorities = response.data.authorities;
-                    $rootScope.user.username = null;
-                    $rootScope.user.password = null;
-
-                    $rootScope.mergeCart(session);
-                    $rootScope.doOnLogin();
-                }
-            }, function errorCallback(response) {
-                console.log(response);
+    function config($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: '/html/products.html',
+                controller: 'productsController'
+            })
+            .when('/cart', {
+                templateUrl: '/html/cart.html',
+                controller: 'cartController'
+            })
+            .when('/orders', {
+                templateUrl: '/html/orders.html',
+                controller: 'ordersController'
+            })
+            .when('/orders/new', {
+                templateUrl: '/html/new_order.html',
+                controller: 'newOrderController'
+            })
+            .otherwise({
+                redirectTo: '/'
             });
     }
 
-    $rootScope.checkLogin = function() {
-        $http
-            .get(rootPath + '/login')
-            .then(function onSuccess(response) {
-                $rootScope.authToken = $localStorage.activeUser.token;
-                $rootScope.user.firstname = $localStorage.activeUser.firstname;
-                $rootScope.user.lastname = $localStorage.activeUser.lastname;
-                $rootScope.user.session = $localStorage.activeUser.session;
-                $rootScope.user.authorities = $localStorage.activeUser.authorities;
-                $rootScope.doOnLogin();
-            }, function onError(response) {
-                $rootScope.clearUser();
-                $rootScope.getSession();
-            });
-    }
+    function run($rootScope, $http, $localStorage) {
+        $rootScope.user = {};
 
-    $rootScope.hasPermission = function(name) {
-        if (typeof $rootScope.user.authorities === 'undefined') {
-            return false;
+        $rootScope.onLoginActions = [];
+        $rootScope.onLogoutActions = [];
+
+        $rootScope.registerOnLogin = function(action) {
+            $rootScope.onLoginActions.push(action);
         }
-        return $rootScope.user.authorities.includes('ALL') ||
-               $rootScope.user.authorities.includes(name);
-    }
 
-    $rootScope.isAuthenticated = function() {
-        return typeof $rootScope.authToken !== 'undefined';
-    }
+        $rootScope.registerOnLogout = function(action) {
+            $rootScope.onLogoutActions.push(action);
+        }
 
-    if ($localStorage.activeUser) {
-        $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.activeUser.token;
-        $http.defaults.headers.common['X-SESSION'] = $localStorage.activeUser.session;
-        $rootScope.checkLogin();
-    } else if ($localStorage.activeSession) {
-        $http.defaults.headers.common['X-SESSION'] = $localStorage.activeSession;
-        $rootScope.user.session = $localStorage.activeSession;
-    } else {
-        $rootScope.getSession();
+        $rootScope.doOnLogin = function() {
+            $rootScope.onLoginActions.forEach(function(action, idx, array) {
+                action();
+            });
+        }
+
+        $rootScope.doOnLogout = function() {
+            $rootScope.onLogoutActions.forEach(function(action, idx, array) {
+                action();
+            });
+        }
+
+        $rootScope.getSession = function() {
+           $http({
+               url: rootPath + '/session',
+               method: 'GET',
+               params: {}
+           }).then(function(response) {
+               $http.defaults.headers.common['X-SESSION'] = response.data;
+               $localStorage.activeSession = response.data
+               $rootScope.user.session = response.data;
+               console.log(response);
+           });
+        }
+
+        $rootScope.mergeCart = function(session) {
+            $http({
+                url: requestPath + '/carts/merge',
+                method: 'PUT',
+                params: {
+                    session: session
+                }
+            });
+        }
+
+        $rootScope.clearUser = function () {
+            delete $localStorage.activeUser;
+            delete $rootScope.authToken;
+            delete $rootScope.user.authorities;
+            delete $rootScope.user.username;
+            delete $rootScope.user.password;
+
+            $http.defaults.headers.common.Authorization = '';
+        };
+
+        $rootScope.doLogout = function() {
+            $rootScope.clearUser();
+            $rootScope.getSession();
+            $rootScope.doOnLogout();
+        }
+
+        $rootScope.doLogin = function() {
+            $http
+                .post(rootPath + '/login', $rootScope.user)
+                .then(function successCallback(response) {
+                    if (response.data.token) {
+                        $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                        $http.defaults.headers.common['X-SESSION'] = response.data.session;
+                        $localStorage.activeUser = {
+                            firstname: response.data.firstname,
+                            lastname: response.data.lastname,
+                            token: response.data.token,
+                            session: response.data.session,
+                            authorities: response.data.authorities
+                        };
+                        delete($localStorage.activeSession);
+                        var session = $rootScope.user.session;
+                        $rootScope.authToken = response.data.token;
+                        $rootScope.user.firstname = response.data.firstname;
+                        $rootScope.user.lastname = response.data.lastname;
+                        $rootScope.user.session = response.data.session;
+                        $rootScope.user.authorities = response.data.authorities;
+                        $rootScope.user.username = null;
+                        $rootScope.user.password = null;
+
+                        $rootScope.mergeCart(session);
+                        $rootScope.doOnLogin();
+                    }
+                }, function errorCallback(response) {
+                    console.log(response);
+                });
+        }
+
+        $rootScope.checkLogin = function() {
+            $http
+                .get(rootPath + '/login')
+                .then(function onSuccess(response) {
+                    $rootScope.authToken = $localStorage.activeUser.token;
+                    $rootScope.user.firstname = $localStorage.activeUser.firstname;
+                    $rootScope.user.lastname = $localStorage.activeUser.lastname;
+                    $rootScope.user.session = $localStorage.activeUser.session;
+                    $rootScope.user.authorities = $localStorage.activeUser.authorities;
+                    $rootScope.doOnLogin();
+                }, function onError(response) {
+                    $rootScope.clearUser();
+                    $rootScope.getSession();
+                });
+        }
+
+        $rootScope.hasPermission = function(name) {
+            if (typeof $rootScope.user.authorities === 'undefined') {
+                return false;
+            }
+            return $rootScope.user.authorities.includes('ALL') ||
+                   $rootScope.user.authorities.includes(name);
+        }
+
+        $rootScope.isAuthenticated = function() {
+            return typeof $rootScope.authToken !== 'undefined';
+        }
+
+        if ($localStorage.activeUser) {
+            $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.activeUser.token;
+            $http.defaults.headers.common['X-SESSION'] = $localStorage.activeUser.session;
+            $rootScope.checkLogin();
+        } else if ($localStorage.activeSession) {
+            $http.defaults.headers.common['X-SESSION'] = $localStorage.activeSession;
+            $rootScope.user.session = $localStorage.activeSession;
+        } else {
+            $rootScope.getSession();
+        }
     }
-});
+})();
+
+$eshop = angular.module('eshop');

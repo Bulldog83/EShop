@@ -1,0 +1,45 @@
+<h3>New order</h3>
+<div ng-show="orderData.items.length > 0">
+	<div class="pl-3" ng-show="errors">
+		<p class="text-danger font-weight-bold mb-1" ng-repeat="err in errors">{{err}}</p>
+	</div>
+	<form ng-submit="createOrder()" novalidate>
+		<div class="form-group col-md-6 mb-3">
+			<label for="address">Address</label>
+			<input id="address" class="form-control" ng-model="orderData.address" type="text">
+		</div>
+		<div class="form-group col-md-6">
+			<label for="phone">Phone</label>
+			<input id="phone" class="form-control" ng-model="orderData.phone" type="text">
+		</div>
+		<h4>Contains:</h4>
+		<table class="table">
+			<thead class="table-secondary">
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Title</th>
+				<th scope="col">Count</th>
+				<th scope="col">Price</th>
+				<th scope="col">Sum</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr ng-repeat="item in orderData.items">
+				<th scope="row">{{$index + 1}}</th>
+				<td>{{item.title}}</td>
+				<td>{{item.count}}</td>
+				<td>{{item.price}}</td>
+				<td>{{item.sum}}</td>
+			</tr>
+			</tbody>
+			<tfoot>
+			<tr class="table-primary">
+				<th scope="row" colspan="4">TOTAL:</th>
+				<td>{{orderData.sumTotal}}</td>
+			</tr>
+			</tfoot>
+		</table>
+		<button type="submit" class="btn btn-primary">Create order</button>
+	</form>
+</div>
+<div ng-show="orderData.items.length == 0">There is nothing to order. Add something to the cart.</div>
