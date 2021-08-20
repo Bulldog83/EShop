@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <list size="15">
+    <list size="16">
       <item index="0" class="java.lang.String" itemvalue="javax.annotation.PostConstruct" />
       <item index="1" class="java.lang.String" itemvalue="javax.persistence.Entity" />
-      <item index="2" class="java.lang.String" itemvalue="org.springframework.context.annotation.Bean" />
-      <item index="3" class="java.lang.String" itemvalue="org.springframework.context.annotation.Configuration" />
-      <item index="4" class="java.lang.String" itemvalue="org.springframework.security.config.annotation.web.configuration.EnableWebSecurity" />
-      <item index="5" class="java.lang.String" itemvalue="org.springframework.stereotype.Controller" />
-      <item index="6" class="java.lang.String" itemvalue="org.springframework.stereotype.Repository" />
-      <item index="7" class="java.lang.String" itemvalue="org.springframework.stereotype.Service" />
-      <item index="8" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.ControllerAdvice" />
-      <item index="9" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.DeleteMapping" />
-      <item index="10" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.ExceptionHandler" />
-      <item index="11" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.GetMapping" />
-      <item index="12" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PostMapping" />
-      <item index="13" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PutMapping" />
-      <item index="14" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.RestController" />
+      <item index="2" class="java.lang.String" itemvalue="org.aspectj.lang.annotation.Around" />
+      <item index="3" class="java.lang.String" itemvalue="org.springframework.context.annotation.Bean" />
+      <item index="4" class="java.lang.String" itemvalue="org.springframework.context.annotation.Configuration" />
+      <item index="5" class="java.lang.String" itemvalue="org.springframework.security.config.annotation.web.configuration.EnableWebSecurity" />
+      <item index="6" class="java.lang.String" itemvalue="org.springframework.stereotype.Controller" />
+      <item index="7" class="java.lang.String" itemvalue="org.springframework.stereotype.Repository" />
+      <item index="8" class="java.lang.String" itemvalue="org.springframework.stereotype.Service" />
+      <item index="9" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.ControllerAdvice" />
+      <item index="10" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.DeleteMapping" />
+      <item index="11" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.ExceptionHandler" />
+      <item index="12" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.GetMapping" />
+      <item index="13" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PostMapping" />
+      <item index="14" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PutMapping" />
+      <item index="15" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.RestController" />
     </list>
     <writeAnnotations>
       <writeAnnotation name="org.springframework.beans.factory.annotation.Value" />
