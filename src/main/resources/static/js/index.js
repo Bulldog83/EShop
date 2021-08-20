@@ -2,38 +2,28 @@ $eshop.controller('indexController', function($rootScope, $scope, $http) {
 
     $scope.currentPage = "products";
 
-    $scope.minPrice = 0.01;
-    $scope.maxPrice = 0.01;
+    $scope.products_data = {
+        page: 1
+    }
 
-    $scope.loadProducts = function(pageIndex = 0) {
+    $scope.loadProducts = function() {
         $http({
             url: requestPath + '/products',
             method: 'GET',
-            params: {
-                page: pageIndex + 1
-            }
+            params: $scope.products_data
         }).then(function(response) {
-            $scope.filtered = false;
             $scope.page = response.data;
             $scope.updatePages();
             console.log(response);
+        }).catch(function(error) {
+            console.log(error);
         });
     };
 
-    $scope.applyFilter = function() {
-        $http({
-            url: requestPath + '/products/filter',
-            method: 'GET',
-            params: {
-                min: $scope.minPrice,
-                max: $scope.maxPrice
-            }
-        }).then(function(response) {
-            $scope.filtered = true;
-            $scope.page = response.data;
-            $scope.updatePages();
-        });
-    };
+    $scope.loadPage = function(pageIndex) {
+        $scope.products_data.page = pageIndex;
+        $scope.loadProducts();
+    }
 
     $scope.deleteProduct = function(idx, id) {
         $http.delete(requestPath + '/products/' + id)
