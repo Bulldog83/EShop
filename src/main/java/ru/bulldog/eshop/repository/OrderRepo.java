@@ -14,5 +14,6 @@ public interface OrderRepo extends JpaRepository<Order, Long> {
 	@Override
 	@EntityGraph(value = "Order.withItems")
 	Optional<Order> findById(Long id);
+	@EntityGraph(value = "Order.withItems")
 	List<Order> findBySessionId(UUID session);
 }
