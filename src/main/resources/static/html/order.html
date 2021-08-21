@@ -1,0 +1,34 @@
+<h3 class="mb-3">Order #{{order.id}}</h3>
+<div class="row">
+	<div class="col-1 font-weight-bold">Address:</div>
+	<div class="col">{{order.address}}</div>
+</div>
+<div class="row mb-3">
+	<div class="col-1 font-weight-bold">Phone:</div>
+	<div class="col">{{order.phone}}</div>
+</div>
+<h5>Items:</h5>
+<table class="table">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Title</th>
+			<th>Count</th>
+			<th>Sum</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="item in order.items">
+			<td>{{$index + 1}}</td>
+			<td>{{item.title}}</td>
+			<td>{{item.count}}</td>
+			<td>{{item.sum}}</td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr class="font-weight-bold">
+			<td colspan="3">Total:</td>
+			<td>{{order.sumTotal}}</td>
+		</tr>
+	</tfoot>
+</table>

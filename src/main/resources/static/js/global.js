@@ -27,6 +27,14 @@ const requestPath = rootPath + '/api/v1';
                 templateUrl: '/html/new_order.html',
                 controller: 'newOrderController'
             })
+            .when('/orders/:orderId', {
+                templateUrl: '/html/order.html',
+                controller: 'singleOrderController'
+            })
+            .when('/register', {
+                templateUrl: '/html/registration.html',
+                controller: 'registerController'
+            })
             .otherwise({
                 redirectTo: '/'
             });

@@ -1,4 +1,4 @@
-$eshop.controller('ordersController', function($rootScope, $scope, $http) {
+$eshop.controller('ordersController', function($rootScope, $scope, $http, $window) {
 
     $scope.currentPage = "orders";
 
@@ -17,6 +17,10 @@ $eshop.controller('ordersController', function($rootScope, $scope, $http) {
             }, function onError(response) {
                 console.log(response);
             });
+    }
+
+    $scope.openOrder = function(id) {
+        $window.location = "#!/orders/" + id;
     }
 
     $rootScope.registerOnLogin($scope.loadOrders);

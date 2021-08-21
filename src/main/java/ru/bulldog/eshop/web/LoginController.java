@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bulldog.eshop.dto.AuthRequest;
 import ru.bulldog.eshop.dto.AuthResponse;
+import ru.bulldog.eshop.dto.UserDTO;
 import ru.bulldog.eshop.model.User;
 import ru.bulldog.eshop.service.UserService;
 import ru.bulldog.eshop.util.JwtToken;
@@ -62,5 +63,10 @@ public class LoginController {
 		response.setAuthorities(user.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
 		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping("/register")
+	public ResponseEntity<?> registerUser(@RequestBody UserDTO userData) {
+		return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 	}
 }
