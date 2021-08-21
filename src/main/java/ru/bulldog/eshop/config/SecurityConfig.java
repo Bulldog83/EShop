@@ -19,11 +19,15 @@ import ru.bulldog.eshop.service.UserService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final JwtRequestFilter jwtRequestFilter;
-	private final UserService userService;
+	private UserService userService;
 
 	@Autowired
-	public SecurityConfig(JwtRequestFilter jwtRequestFilter, UserService userService) {
+	public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
 		this.jwtRequestFilter = jwtRequestFilter;
+	}
+
+	@Autowired
+	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
 

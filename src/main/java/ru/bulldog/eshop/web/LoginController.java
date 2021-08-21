@@ -64,9 +64,4 @@ public class LoginController {
 				.map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
 		return ResponseEntity.ok(response);
 	}
-
-	@PostMapping("/register")
-	public ResponseEntity<?> registerUser(@RequestBody UserDTO userData) {
-		return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-	}
 }
