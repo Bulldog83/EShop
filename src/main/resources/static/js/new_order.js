@@ -7,7 +7,7 @@ $eshop.controller('newOrderController', function($rootScope, $scope, $http, $win
         }).then(function(response) {
             console.log(response);
             $scope.orderData = {
-                sessionId: $rootScope.user.session,
+                sessionId: $rootScope.user.sessionId,
                 items: response.data.items,
                 sumTotal: response.data.sumTotal
             }

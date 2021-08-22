@@ -27,9 +27,9 @@ public class User implements UserDetails {
 	@Column(name = "lastname")
 	private String lastName;
 	@Column
-	private boolean locked;
+	private boolean locked = false;
 	@Column
-	private boolean enabled;
+	private boolean enabled = true;
 	@Column
 	private LocalDateTime expired;
 	@Column

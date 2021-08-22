@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.disable()
 			.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/orders/new").permitAll()
-				.antMatchers(HttpMethod.GET, "/api/?+/orders/**").authenticated()
+				.antMatchers(HttpMethod.GET, "/orders/**").authenticated()
 				.antMatchers(HttpMethod.PUT, "/orders/**").hasAnyAuthority("ALL", "MANAGE_ORDERS")
 				.antMatchers(HttpMethod.DELETE, "/orders/**").hasAnyAuthority("ALL", "MANAGE_ORDERS")
 				.antMatchers(HttpMethod.POST, "/products/**").hasAnyAuthority("ALL", "MANAGE_PRODUCTS")

@@ -1,7 +1,7 @@
 <h3>New order</h3>
 <div ng-show="orderData.items.length > 0">
-	<div class="pl-3" ng-show="errors">
-		<p class="text-danger font-weight-bold mb-1" ng-repeat="err in errors">{{err}}</p>
+	<div class="ps-3" ng-show="errors">
+		<p class="text-danger fw-bold mb-1" ng-repeat="err in errors">{{err}}</p>
 	</div>
 	<form ng-submit="createOrder()" novalidate>
 		<div class="form-group col-md-6 mb-3">

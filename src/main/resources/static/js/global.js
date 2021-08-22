@@ -40,7 +40,7 @@ const requestPath = rootPath + '/api/v1';
             });
     }
 
-    function run($rootScope, $http, $localStorage) {
+    function run($rootScope, $http, $localStorage, $window) {
         $rootScope.user = {};
 
         $rootScope.onLoginActions = [];
@@ -74,7 +74,7 @@ const requestPath = rootPath + '/api/v1';
            }).then(function(response) {
                $http.defaults.headers.common['X-SESSION'] = response.data;
                $localStorage.activeSession = response.data
-               $rootScope.user.session = response.data;
+               $rootScope.user.sessionId = response.data;
                console.log(response);
            });
         }
@@ -120,11 +120,11 @@ const requestPath = rootPath + '/api/v1';
                             authorities: response.data.authorities
                         };
                         delete($localStorage.activeSession);
-                        var session = $rootScope.user.session;
+                        var session = $rootScope.user.sessionId;
                         $rootScope.authToken = response.data.token;
                         $rootScope.user.firstname = response.data.firstname;
                         $rootScope.user.lastname = response.data.lastname;
-                        $rootScope.user.session = response.data.session;
+                        $rootScope.user.sessionId = response.data.session;
                         $rootScope.user.authorities = response.data.authorities;
                         $rootScope.user.username = null;
                         $rootScope.user.password = null;
@@ -144,13 +144,17 @@ const requestPath = rootPath + '/api/v1';
                     $rootScope.authToken = $localStorage.activeUser.token;
                     $rootScope.user.firstname = $localStorage.activeUser.firstname;
                     $rootScope.user.lastname = $localStorage.activeUser.lastname;
-                    $rootScope.user.session = $localStorage.activeUser.session;
+                    $rootScope.user.sessionId = $localStorage.activeUser.session;
                     $rootScope.user.authorities = $localStorage.activeUser.authorities;
                     $rootScope.doOnLogin();
                 }, function onError(response) {
                     $rootScope.clearUser();
                     $rootScope.getSession();
                 });
+        }
+
+        $rootScope.goRegister = function() {
+            $window.location = '/#!/register';
         }
 
         $rootScope.hasPermission = function(name) {
@@ -171,7 +175,7 @@ const requestPath = rootPath + '/api/v1';
             $rootScope.checkLogin();
         } else if ($localStorage.activeSession) {
             $http.defaults.headers.common['X-SESSION'] = $localStorage.activeSession;
-            $rootScope.user.session = $localStorage.activeSession;
+            $rootScope.user.sessionId = $localStorage.activeSession;
         } else {
             $rootScope.getSession();
         }

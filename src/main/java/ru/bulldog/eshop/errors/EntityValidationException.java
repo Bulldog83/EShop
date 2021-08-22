@@ -1,5 +1,6 @@
 package ru.bulldog.eshop.errors;
 
+import java.util.Collections;
 import java.util.List;
 
 public class EntityValidationException extends RuntimeException {
@@ -12,6 +13,7 @@ public class EntityValidationException extends RuntimeException {
 
 	public EntityValidationException(String message) {
 		super(message);
+		this.errors = Collections.singletonList(message);
 	}
 
 	public void setErrors(List<String> errors) {

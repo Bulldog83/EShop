@@ -61,6 +61,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public boolean isUsernameExists(String username) {
+		return repository.existsByUsername(username);
+	}
+
+	@Override
+	public boolean isUserSessionExists(UUID sessionId) {
+		return repository.existsBySessionId(sessionId);
+	}
+
+	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = repository.findByUsername(username).orElseThrow(() ->

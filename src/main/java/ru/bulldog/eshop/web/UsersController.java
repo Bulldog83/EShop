@@ -28,6 +28,12 @@ public class UsersController {
 	public ResponseEntity<?> registerUser(@RequestBody UserDTO userData) {
 		ValidationResult validationResult = Validator.validate(userData);
 		if (validationResult.isValid()) {
+			if (userService.isUsernameExists(userData.getUsername())) {
+				throw new EntityValidationException("User with email " + userData.getUsername() + " exists.");
+			}
+			if (userService.isUserSessionExists(userData.getSessionId())) {
+				throw new EntityValidationException("You've already registered, but didn't logged in.");
+			}
 			userService.create(userData);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
