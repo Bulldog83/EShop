@@ -105,6 +105,19 @@ const requestPath = rootPath + '/api/v1';
             $rootScope.doOnLogout();
         }
 
+        $rootScope.updateDisplayName = function() {
+            if ($rootScope.user.firstname && $rootScope.user.lastname) {
+                $rootScope.user.displayName = $rootScope.user.firstname + ' ' + $rootScope.user.lastname;
+            } else if ($rootScope.user.firstname) {
+                $rootScope.user.displayName = $rootScope.user.firstname;
+            } else if ($rootScope.user.lastname) {
+                $rootScope.user.displayName = $rootScope.user.lastname;
+            } else {
+                $rootScope.user.displayName = $rootScope.user.username;
+            }
+            $localStorage.activeUser.displayName = $rootScope.user.displayName;
+        }
+
         $rootScope.doLogin = function() {
             $http
                 .post(rootPath + '/login', $rootScope.user)
@@ -120,15 +133,16 @@ const requestPath = rootPath + '/api/v1';
                             authorities: response.data.authorities
                         };
                         delete($localStorage.activeSession);
+                        delete($rootScope.user.password);
+
                         var session = $rootScope.user.sessionId;
                         $rootScope.authToken = response.data.token;
                         $rootScope.user.firstname = response.data.firstname;
                         $rootScope.user.lastname = response.data.lastname;
                         $rootScope.user.sessionId = response.data.session;
                         $rootScope.user.authorities = response.data.authorities;
-                        $rootScope.user.username = null;
-                        $rootScope.user.password = null;
 
+                        $rootScope.updateDisplayName();
                         $rootScope.mergeCart(session);
                         $rootScope.doOnLogin();
                     }
@@ -146,6 +160,7 @@ const requestPath = rootPath + '/api/v1';
                     $rootScope.user.lastname = $localStorage.activeUser.lastname;
                     $rootScope.user.sessionId = $localStorage.activeUser.session;
                     $rootScope.user.authorities = $localStorage.activeUser.authorities;
+                    $rootScope.user.displayName = $localStorage.activeUser.displayName;
                     $rootScope.doOnLogin();
                 }, function onError(response) {
                     $rootScope.clearUser();

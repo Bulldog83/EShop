@@ -1,4 +1,4 @@
-$eshop.controller('newOrderController', function($rootScope, $scope, $http, $window) {
+$eshop.controller('newOrderController', function($rootScope, $scope, $http, $location) {
 
     $scope.initOrder = function() {
         $http({
@@ -19,9 +19,9 @@ $eshop.controller('newOrderController', function($rootScope, $scope, $http, $win
             .then(function onSuccess(response) {
                 alert("Order successfully created.");
                 if ($rootScope.isAuthenticated()) {
-                    $window.location = '/#!/orders';
+                    $location.path('/orders');
                 } else {
-                    $window.location = '/';
+                    $location.path('/');
                 }
             }, function onError(response) {
                 console.log(response);

@@ -1,4 +1,4 @@
-$eshop.controller('registerController', function($rootScope, $scope, $http, $window) {
+$eshop.controller('registerController', function($rootScope, $scope, $http, $location) {
 
        $scope.doRegister = function() {
             var $user = $rootScope.user;
@@ -10,7 +10,7 @@ $eshop.controller('registerController', function($rootScope, $scope, $http, $win
                 .then(function onSuccess(response) {
                     alert("You've successfully registered.");
                     $rootScope.doLogin();
-                    $window.location = '/';
+                    $location.path('/');
                 }, function onError(response) {
                     console.log(response);
                     $scope.errors = response.data.errors;
