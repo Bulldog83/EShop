@@ -1,11 +1,12 @@
 package ru.bulldog.eshop.service.specifications;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class SpecificationService<T> {
 
@@ -13,20 +14,38 @@ public abstract class SpecificationService<T> {
 
 	protected class SpecificationBuilder {
 
-		private final List<Specification<T>> specifications;
+		private final MultiValueMap<SpecRule, Specification<T>> specificationMap;
 
 		public SpecificationBuilder() {
-			this.specifications = new ArrayList<>();
+			this.specificationMap = new LinkedMultiValueMap<>();
 		}
 
-		public void addSpecification(Specification<T> specification) {
+		public void addSpecification(SpecRule rule, Specification<T> specification) {
+			List<Specification<T>> specifications = specificationMap.getOrDefault(rule, new ArrayList<>());
 			specifications.add(specification);
+			specificationMap.put(rule, specifications);
 		}
 
 		public Specification<T> build() {
-			AtomicReference<Specification<T>> specification = new AtomicReference<>(Specification.where(null));
-			specifications.forEach(spec -> specification.set(specification.get().and(spec)));
-			return specification.get();
+			Specification<T> specification = Specification.where(null);
+			for (Map.Entry<SpecRule, List<Specification<T>>> entry : specificationMap.entrySet()) {
+				SpecRule rule = entry.getKey();
+				List<Specification<T>> specifications = entry.getValue();
+				for (Specification<T> spec : specifications) {
+					switch (rule) {
+						case AND:
+							specification = specification.and(spec);
+						case OR:
+							specification = specification.or(spec);
+					}
+				}
+			}
+			return specification;
 		}
+	}
+
+	public enum SpecRule {
+		AND,
+		OR
 	}
 }

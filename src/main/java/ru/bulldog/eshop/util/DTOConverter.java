@@ -88,4 +88,16 @@ public class DTOConverter {
 
 		return userDTO;
 	};
+
+	public final static Function<UserDTO, User> USER_FACTORY = userDTO -> {
+		User user = new User();
+		user.setId(userDTO.getId());
+		user.setSessionId(userDTO.getSessionId());
+		user.setUsername(userDTO.getUsername());
+		user.setPassword(userDTO.getPassword());
+		user.setFirstName(userDTO.getFirstName());
+		user.setLastName(userDTO.getLastName());
+
+		return user;
+	};
 }

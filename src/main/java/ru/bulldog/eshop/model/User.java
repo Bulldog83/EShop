@@ -6,12 +6,17 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+
+	private final static LocalDateTime DEFAULT_EXPIRED = LocalDateTime.of(LocalDate.parse("9999-12-31"), LocalTime.MAX);
+
 	@Id
 	@Column(name = "raw_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +32,11 @@ public class User implements UserDetails {
 	@Column(name = "lastname")
 	private String lastName;
 	@Column
-	private boolean locked;
+	private boolean locked = false;
 	@Column
-	private boolean enabled;
+	private boolean enabled = true;
 	@Column
-	private LocalDateTime expired;
+	private LocalDateTime expired = DEFAULT_EXPIRED;
 	@Column
 	@CreationTimestamp
 	private LocalDateTime created;

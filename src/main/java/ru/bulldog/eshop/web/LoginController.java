@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bulldog.eshop.dto.AuthRequest;
 import ru.bulldog.eshop.dto.AuthResponse;
+import ru.bulldog.eshop.dto.UserDTO;
 import ru.bulldog.eshop.model.User;
 import ru.bulldog.eshop.service.UserService;
 import ru.bulldog.eshop.util.JwtToken;

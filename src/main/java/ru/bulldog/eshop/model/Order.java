@@ -11,6 +11,9 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
+@NamedEntityGraph(name = "Order.withItems",
+	attributeNodes = @NamedAttributeNode("items")
+)
 public class Order {
 	@Id
 	@Column(name = "raw_id")

@@ -19,11 +19,15 @@ import ru.bulldog.eshop.service.UserService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final JwtRequestFilter jwtRequestFilter;
-	private final UserService userService;
+	private UserService userService;
 
 	@Autowired
-	public SecurityConfig(JwtRequestFilter jwtRequestFilter, UserService userService) {
+	public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
 		this.jwtRequestFilter = jwtRequestFilter;
+	}
+
+	@Autowired
+	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
 
@@ -33,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.disable()
 			.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/orders/new").permitAll()
-				.antMatchers(HttpMethod.GET, "/api/?+/orders/**").authenticated()
+				.antMatchers(HttpMethod.GET, "/orders/**").authenticated()
 				.antMatchers(HttpMethod.PUT, "/orders/**").hasAnyAuthority("ALL", "MANAGE_ORDERS")
 				.antMatchers(HttpMethod.DELETE, "/orders/**").hasAnyAuthority("ALL", "MANAGE_ORDERS")
 				.antMatchers(HttpMethod.POST, "/products/**").hasAnyAuthority("ALL", "MANAGE_PRODUCTS")

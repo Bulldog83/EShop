@@ -1,8 +1,15 @@
-$eshop.controller('ordersController', function($rootScope, $scope, $http) {
+$eshop.controller('ordersController', function($rootScope, $scope, $http, $window) {
 
     $scope.currentPage = "orders";
 
+    $scope.removeOrders = function() {
+        if ($scope.orders) {
+            delete($scope.orders);
+        }
+    }
+
     $scope.loadOrders = function() {
+        $scope.removeOrders();
         $http.get(requestPath + '/orders')
             .then(function onSuccess(response) {
                 $scope.orders = response.data;
@@ -12,8 +19,14 @@ $eshop.controller('ordersController', function($rootScope, $scope, $http) {
             });
     }
 
+    $scope.openOrder = function(id) {
+        $window.location = "#!/orders/" + id;
+    }
+
     $rootScope.registerOnLogin($scope.loadOrders);
-    $rootScope.registerOnLogout(function() {
-        delete($scope.orders);
-    });
+    $rootScope.registerOnLogout($scope.removeOrders);
+
+    if ($rootScope.isAuthenticated()) {
+        $scope.loadOrders();
+    }
 });

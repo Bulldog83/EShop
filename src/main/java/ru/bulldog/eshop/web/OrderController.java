@@ -33,7 +33,6 @@ public class OrderController {
 	}
 
 	@GetMapping
-	@Transactional
 	public List<OrderDTO> getOrders(HttpServletRequest request) {
 		return SessionUtil.getSession(request).map(uuid -> orderService.findBySession(uuid).stream()
 				.map(ORDER_TO_DTO_FACTORY).collect(Collectors.toList())).orElseGet(ArrayList::new);

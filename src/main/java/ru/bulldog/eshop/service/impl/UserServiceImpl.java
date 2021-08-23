@@ -4,26 +4,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bulldog.eshop.dto.UserDTO;
+import ru.bulldog.eshop.model.Role;
 import ru.bulldog.eshop.model.User;
 import ru.bulldog.eshop.repository.UserRepo;
+import ru.bulldog.eshop.service.RoleService;
 import ru.bulldog.eshop.service.UserService;
+import ru.bulldog.eshop.util.DTOConverter;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
 
 	private final UserRepo repository;
+	private final RoleService roleService;
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	public UserServiceImpl(UserRepo repository) {
+	public UserServiceImpl(UserRepo repository, RoleService roleService) {
 		this.repository = repository;
+		this.roleService = roleService;
+	}
+
+	@Autowired
+	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
@@ -43,7 +52,22 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User create(UserDTO userDTO) {
-		return null;
+		String passwordEncoded = passwordEncoder.encode(userDTO.getPassword());
+		User user = DTOConverter.USER_FACTORY.apply(userDTO);
+		user.setPassword(passwordEncoded);
+		roleService.findByName("ROLE_CUSTOMER").ifPresent(role ->
+				user.setRoles(Collections.singletonList(role)));
+		return repository.save(user);
+	}
+
+	@Override
+	public boolean isUsernameExists(String username) {
+		return repository.existsByUsername(username);
+	}
+
+	@Override
+	public boolean isUserSessionExists(UUID sessionId) {
+		return repository.existsBySessionId(sessionId);
 	}
 
 	@Override
