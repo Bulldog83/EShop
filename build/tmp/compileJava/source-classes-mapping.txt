@@ -1,18 +1,134 @@
-ru/bulldog/eshop/repository/EntityRepo.java
- ru.bulldog.eshop.repository.EntityRepo
-ru/bulldog/eshop/EShopConfig.java
- ru.bulldog.eshop.EShopConfig
-ru/bulldog/eshop/service/ProductServiceImpl.java
- ru.bulldog.eshop.service.ProductServiceImpl
+ru/bulldog/eshop/dto/CartDTO.java
+ ru.bulldog.eshop.dto.CartDTO
 ru/bulldog/eshop/EShop.java
  ru.bulldog.eshop.EShop
+ru/bulldog/eshop/dto/AuthResponse.java
+ ru.bulldog.eshop.dto.AuthResponse
+ru/bulldog/eshop/util/JwtTokenUtil.java
+ ru.bulldog.eshop.util.JwtTokenUtil
+ru/bulldog/eshop/repository/RoleRepo.java
+ ru.bulldog.eshop.repository.RoleRepo
+ru/bulldog/eshop/util/Validator.java
+ ru.bulldog.eshop.util.Validator
+ ru.bulldog.eshop.util.Validator$ValidationResult
+ru/bulldog/eshop/model/User.java
+ ru.bulldog.eshop.model.User
+ru/bulldog/eshop/service/specifications/SpecificationService.java
+ ru.bulldog.eshop.service.specifications.SpecificationService
+ ru.bulldog.eshop.service.specifications.SpecificationService$1
+ ru.bulldog.eshop.service.specifications.SpecificationService$SpecRule
+ ru.bulldog.eshop.service.specifications.SpecificationService$SpecificationBuilder
+ru/bulldog/eshop/config/SecurityConfig.java
+ ru.bulldog.eshop.config.SecurityConfig
+ru/bulldog/eshop/repository/UserRepo.java
+ ru.bulldog.eshop.repository.UserRepo
+ru/bulldog/eshop/dto/AuthRequest.java
+ ru.bulldog.eshop.dto.AuthRequest
+ru/bulldog/eshop/model/Role.java
+ ru.bulldog.eshop.model.Role
+ru/bulldog/eshop/service/UserService.java
+ ru.bulldog.eshop.service.UserService
+ru/bulldog/eshop/config/JwtRequestFilter.java
+ ru.bulldog.eshop.config.JwtRequestFilter
+ru/bulldog/eshop/dto/UserDTO.java
+ ru.bulldog.eshop.dto.UserDTO
+ru/bulldog/eshop/web/StatController.java
+ ru.bulldog.eshop.web.StatController
+ru/bulldog/eshop/service/CartService.java
+ ru.bulldog.eshop.service.CartService
+ru/bulldog/eshop/dto/CategoryDTO.java
+ ru.bulldog.eshop.dto.CategoryDTO
+ru/bulldog/eshop/service/impl/CategoryServiceImpl.java
+ ru.bulldog.eshop.service.impl.CategoryServiceImpl
+ru/bulldog/eshop/config/EShopConfig.java
+ ru.bulldog.eshop.config.EShopConfig
+ru/bulldog/eshop/service/impl/OrderItemServiceImpl.java
+ ru.bulldog.eshop.service.impl.OrderItemServiceImpl
+ru/bulldog/eshop/service/RoleService.java
+ ru.bulldog.eshop.service.RoleService
+ru/bulldog/eshop/model/Category.java
+ ru.bulldog.eshop.model.Category
+ru/bulldog/eshop/util/SessionUtil.java
+ ru.bulldog.eshop.util.SessionUtil
+ru/bulldog/eshop/web/HandleExceptionController.java
+ ru.bulldog.eshop.web.HandleExceptionController
+ru/bulldog/eshop/model/Order.java
+ ru.bulldog.eshop.model.Order
+ru/bulldog/eshop/repository/CategoryRepo.java
+ ru.bulldog.eshop.repository.CategoryRepo
+ru/bulldog/eshop/dto/OrderItemDTO.java
+ ru.bulldog.eshop.dto.OrderItemDTO
+ru/bulldog/eshop/service/impl/ProductServiceImpl.java
+ ru.bulldog.eshop.service.impl.ProductServiceImpl
+ru/bulldog/eshop/service/OrderService.java
+ ru.bulldog.eshop.service.OrderService
+ru/bulldog/eshop/dto/OrderDTO.java
+ ru.bulldog.eshop.dto.OrderDTO
+ru/bulldog/eshop/statistics/StatisticsService.java
+ ru.bulldog.eshop.statistics.StatisticsService
+ru/bulldog/eshop/model/Product.java
+ ru.bulldog.eshop.model.Product
+ru/bulldog/eshop/dto/ErrorDTO.java
+ ru.bulldog.eshop.dto.ErrorDTO
+ru/bulldog/eshop/web/UsersController.java
+ ru.bulldog.eshop.web.UsersController
+ru/bulldog/eshop/errors/EntityValidationException.java
+ ru.bulldog.eshop.errors.EntityValidationException
+ru/bulldog/eshop/dto/ProductDTO.java
+ ru.bulldog.eshop.dto.ProductDTO
+ru/bulldog/eshop/service/specifications/ProductSpecificationService.java
+ ru.bulldog.eshop.service.specifications.ProductSpecificationService
+ru/bulldog/eshop/web/LoginController.java
+ ru.bulldog.eshop.web.LoginController
+ru/bulldog/eshop/util/JwtToken.java
+ ru.bulldog.eshop.util.JwtToken
+ru/bulldog/eshop/service/CategoryService.java
+ ru.bulldog.eshop.service.CategoryService
+ru/bulldog/eshop/service/OrderItemService.java
+ ru.bulldog.eshop.service.OrderItemService
+ru/bulldog/eshop/repository/OrderRepo.java
+ ru.bulldog.eshop.repository.OrderRepo
+ru/bulldog/eshop/repository/OrderItemRepo.java
+ ru.bulldog.eshop.repository.OrderItemRepo
+ru/bulldog/eshop/service/impl/RoleServiceImpl.java
+ ru.bulldog.eshop.service.impl.RoleServiceImpl
 ru/bulldog/eshop/service/ProductService.java
  ru.bulldog.eshop.service.ProductService
 ru/bulldog/eshop/repository/ProductRepo.java
  ru.bulldog.eshop.repository.ProductRepo
-ru/bulldog/eshop/model/Product.java
- ru.bulldog.eshop.model.Product
+ru/bulldog/eshop/model/OrderItem.java
+ ru.bulldog.eshop.model.OrderItem
+ru/bulldog/eshop/model/Permission.java
+ ru.bulldog.eshop.model.Permission
+ru/bulldog/eshop/web/CartController.java
+ ru.bulldog.eshop.web.CartController
 ru/bulldog/eshop/web/ProductController.java
  ru.bulldog.eshop.web.ProductController
-ru/bulldog/eshop/Cart.java
- ru.bulldog.eshop.Cart
+ru/bulldog/eshop/config/WebServiceConfig.java
+ ru.bulldog.eshop.config.WebServiceConfig
+ru/bulldog/eshop/web/CategoryController.java
+ ru.bulldog.eshop.web.CategoryController
+ru/bulldog/eshop/service/impl/OrderServiceImpl.java
+ ru.bulldog.eshop.service.impl.OrderServiceImpl
+ru/bulldog/eshop/web/OrderController.java
+ ru.bulldog.eshop.web.OrderController
+ru/bulldog/eshop/service/impl/UserServiceImpl.java
+ ru.bulldog.eshop.service.impl.UserServiceImpl
+ru/bulldog/eshop/ws/products/GetAllProductsResponse.java
+ ru.bulldog.eshop.ws.products.GetAllProductsResponse
+ru/bulldog/eshop/util/EntityConverter.java
+ ru.bulldog.eshop.util.EntityConverter
+ru/bulldog/eshop/ws/products/GetProductByIdResponse.java
+ ru.bulldog.eshop.ws.products.GetProductByIdResponse
+ru/bulldog/eshop/ws/products/GetProductByIdRequest.java
+ ru.bulldog.eshop.ws.products.GetProductByIdRequest
+ru/bulldog/eshop/ws/products/ProductWS.java
+ ru.bulldog.eshop.ws.products.ProductWS
+ru/bulldog/eshop/ws/products/GetAllProductsRequest.java
+ ru.bulldog.eshop.ws.products.GetAllProductsRequest
+ru/bulldog/eshop/ws/products/ObjectFactory.java
+ ru.bulldog.eshop.ws.products.ObjectFactory
+ru/bulldog/eshop/endpoints/ProductsEndpoint.java
+ ru.bulldog.eshop.endpoints.ProductsEndpoint
+ru/bulldog/eshop/ws/products/package-info.java
+ ru.bulldog.eshop.ws.products.package-info

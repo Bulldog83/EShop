@@ -3,11 +3,12 @@ package ru.bulldog.eshop.util;
 import org.springframework.security.core.GrantedAuthority;
 import ru.bulldog.eshop.dto.*;
 import ru.bulldog.eshop.model.*;
+import ru.bulldog.eshop.ws.products.ProductWS;
 
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class DTOConverter {
+public class EntityConverter {
 
 	public final static Function<Product, ProductDTO> PRODUCT_TO_DTO_FACTORY = product -> {
 		ProductDTO productDTO = new ProductDTO();
@@ -99,5 +100,14 @@ public class DTOConverter {
 		user.setLastName(userDTO.getLastName());
 
 		return user;
+	};
+
+	public final static Function<Product, ProductWS> PRODUCT_TO_WS_FACTORY = product -> {
+		ProductWS productWS = new ProductWS();
+		productWS.setId(productWS.getId());
+		productWS.setTitle(productWS.getTitle());
+		productWS.setPrice(product.getPrice().doubleValue());
+
+		return productWS;
 	};
 }
