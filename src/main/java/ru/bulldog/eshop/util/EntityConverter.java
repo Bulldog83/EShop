@@ -104,8 +104,8 @@ public class EntityConverter {
 
 	public final static Function<Product, ProductWS> PRODUCT_TO_WS_FACTORY = product -> {
 		ProductWS productWS = new ProductWS();
-		productWS.setId(productWS.getId());
-		productWS.setTitle(productWS.getTitle());
+		productWS.setId(product.getId());
+		productWS.setTitle(product.getTitle());
 		productWS.setPrice(product.getPrice().doubleValue());
 
 		return productWS;

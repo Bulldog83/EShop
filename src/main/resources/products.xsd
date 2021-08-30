@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<xs:schema
-        xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns:tns="http://www.bulldog.ru/eshop/ws/products"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bulldog.ru/eshop/ws/products"
         targetNamespace="http://www.bulldog.ru/eshop/ws/products" elementFormDefault="qualified">
 
     <xs:element name="getProductByIdRequest">
@@ -11,11 +9,6 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-
-    <xs:element name="getAllProductsRequest">
-        <xs:complexType/>
-    </xs:element>
-
     <xs:element name="getProductByIdResponse">
         <xs:complexType>
             <xs:sequence>
@@ -24,6 +17,9 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="getAllProductsRequest">
+        <xs:complexType/>
+    </xs:element>
     <xs:element name="getAllProductsResponse">
         <xs:complexType>
             <xs:sequence>

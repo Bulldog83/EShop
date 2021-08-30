@@ -26,7 +26,7 @@ public class WebServiceConfig {
 	public DefaultWsdl11Definition groupsWsdl11Definition(XsdSchema productsSchema) {
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("ProductsPort");
-		wsdl11Definition.setLocationUri("/ws");
+		wsdl11Definition.setLocationUri("/eshop/ws");
 		wsdl11Definition.setTargetNamespace("http://www.bulldog.ru/eshop/ws/products");
 		wsdl11Definition.setSchema(productsSchema);
 		return wsdl11Definition;
