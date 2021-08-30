@@ -1,3 +1,5 @@
+server:
+  port: 8080
 spring:
   datasource:
     driver-class-name: org.h2.Driver
@@ -15,6 +17,10 @@ spring:
       enabled: true
       settings:
         web-allow-others: false
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
 jwt:
   secret: kajsdfa894uqp0394u]=asfa-9w=47rta08ygfoa8hfv7qa43ytalsdkf
   lifetime: 604800000

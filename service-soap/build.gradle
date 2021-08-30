@@ -1,0 +1,51 @@
+
+group = 'ru.bulldog.eshop.soap'
+version = '0.0.1-SNAPSHOT'
+
+configurations {
+    jaxb
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web-services'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    implementation 'org.glassfish.jaxb:jaxb-runtime'
+    implementation 'javax.xml.bind:jaxb-api'
+    implementation 'wsdl4j:wsdl4j'
+
+    implementation project(':common-dto')
+
+    jaxb 'org.glassfish.jaxb:jaxb-xjc'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+            srcDir 'src/generated/jaxb'
+        }
+    }
+}
+
+task genJaxb {
+    ext.sourcesDir = "src/generated/jaxb"
+    ext.schema = "src/main/resources/products.xsd"
+
+    outputs.dir sourcesDir
+
+    doLast() {
+        project.ant {
+            taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
+                    classpath: configurations.jaxb.asPath
+            mkdir(dir: sourcesDir)
+
+            xjc(destdir: sourcesDir, schema: schema) {
+                arg(value: "-wsdl")
+                produces(dir: sourcesDir, includes: "**/*.java")
+            }
+        }
+    }
+}
+
+compileJava.dependsOn genJaxb
