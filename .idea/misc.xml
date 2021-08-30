@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <list size="17">
+    <list size="18">
       <item index="0" class="java.lang.String" itemvalue="javax.annotation.PostConstruct" />
       <item index="1" class="java.lang.String" itemvalue="javax.persistence.Entity" />
       <item index="2" class="java.lang.String" itemvalue="org.aspectj.lang.annotation.Around" />
@@ -19,6 +19,7 @@
       <item index="14" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PostMapping" />
       <item index="15" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PutMapping" />
       <item index="16" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.RestController" />
+      <item index="17" class="java.lang.String" itemvalue="org.springframework.ws.server.endpoint.annotation.ResponsePayload" />
     </list>
     <writeAnnotations>
       <writeAnnotation name="org.springframework.beans.factory.annotation.Value" />

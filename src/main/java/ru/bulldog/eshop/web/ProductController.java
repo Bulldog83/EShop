@@ -13,7 +13,7 @@ import javax.persistence.EntityNotFoundException;
 
 import java.util.Map;
 
-import static ru.bulldog.eshop.util.DTOConverter.PRODUCT_TO_DTO_FACTORY;
+import static ru.bulldog.eshop.util.EntityConverter.PRODUCT_TO_DTO_FACTORY;
 
 @RestController
 @RequestMapping("/api/v1/products")

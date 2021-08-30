@@ -11,7 +11,7 @@ import ru.bulldog.eshop.service.CategoryService;
 
 import javax.persistence.EntityNotFoundException;
 
-import static ru.bulldog.eshop.util.DTOConverter.CATEGORY_TO_DTO_FACTORY;
+import static ru.bulldog.eshop.util.EntityConverter.CATEGORY_TO_DTO_FACTORY;
 
 @RestController
 @RequestMapping("/api/v1/categories")

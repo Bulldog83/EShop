@@ -8,12 +8,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bulldog.eshop.dto.UserDTO;
-import ru.bulldog.eshop.model.Role;
 import ru.bulldog.eshop.model.User;
 import ru.bulldog.eshop.repository.UserRepo;
 import ru.bulldog.eshop.service.RoleService;
 import ru.bulldog.eshop.service.UserService;
-import ru.bulldog.eshop.util.DTOConverter;
+import ru.bulldog.eshop.util.EntityConverter;
 
 import java.util.*;
 
@@ -53,7 +52,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User create(UserDTO userDTO) {
 		String passwordEncoded = passwordEncoder.encode(userDTO.getPassword());
-		User user = DTOConverter.USER_FACTORY.apply(userDTO);
+		User user = EntityConverter.USER_FACTORY.apply(userDTO);
 		user.setPassword(passwordEncoded);
 		roleService.findByName("ROLE_CUSTOMER").ifPresent(role ->
 				user.setRoles(Collections.singletonList(role)));

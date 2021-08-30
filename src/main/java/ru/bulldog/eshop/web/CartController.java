@@ -10,7 +10,7 @@ import ru.bulldog.eshop.util.SessionUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
-import static ru.bulldog.eshop.util.DTOConverter.PRODUCT_TO_DTO_FACTORY;
+import static ru.bulldog.eshop.util.EntityConverter.PRODUCT_TO_DTO_FACTORY;
 
 @RestController
 @RequestMapping("/api/v1/carts")

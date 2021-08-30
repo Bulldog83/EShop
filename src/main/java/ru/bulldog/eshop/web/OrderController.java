@@ -1,6 +1,5 @@
 package ru.bulldog.eshop.web;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.bulldog.eshop.dto.CartDTO;
 import ru.bulldog.eshop.dto.OrderDTO;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ru.bulldog.eshop.util.DTOConverter.ORDER_TO_DTO_FACTORY;
+import static ru.bulldog.eshop.util.EntityConverter.ORDER_TO_DTO_FACTORY;
 
 @RestController
 @RequestMapping("/api/v1/orders")
