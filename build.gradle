@@ -30,7 +30,6 @@ allprojects {
     }
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-web'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.4'
     }
 
@@ -43,6 +42,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
     implementation 'org.aspectj:aspectjweaver:1.9.7'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
