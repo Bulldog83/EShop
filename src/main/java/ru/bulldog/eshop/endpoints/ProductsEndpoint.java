@@ -8,6 +8,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import ru.bulldog.eshop.service.ProductService;
 import ru.bulldog.eshop.ws.products.*;
 
+import javax.xml.ws.WebEndpoint;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class ProductsEndpoint {
 
 	@ResponsePayload
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getProductByIdRequest")
-	public GetProductByIdResponse getStudentByName(@RequestPayload GetProductByIdRequest request) {
+	public GetProductByIdResponse getProductById(@RequestPayload GetProductByIdRequest request) {
 		GetProductByIdResponse response = new GetProductByIdResponse();
 		Optional<ProductWS> productOptional = productService.getById(request.getId()).map(PRODUCT_TO_WS_FACTORY);
 		productOptional.ifPresent(response::setProduct);
@@ -36,7 +37,7 @@ public class ProductsEndpoint {
 
 	@ResponsePayload
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllProductsRequest")
-	public GetAllProductsResponse getAllStudents(@RequestPayload GetAllProductsRequest request) {
+	public GetAllProductsResponse getAllProducts(@RequestPayload GetAllProductsRequest request) {
 		GetAllProductsResponse response = new GetAllProductsResponse();
 		List<ProductWS> productsWS = productService.getAll().stream().map(PRODUCT_TO_WS_FACTORY).collect(Collectors.toList());
 		response.getProducts().addAll(productsWS);
