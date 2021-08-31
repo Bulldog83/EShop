@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  application:
+    name: service-main
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:mydatabase;MODE=MySQL
@@ -19,8 +21,9 @@ spring:
         web-allow-others: false
 eureka:
   client:
-    registerWithEureka: false
-    fetchRegistry: false
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8091/eureka}
+    fetchRegistry: true
 jwt:
   secret: kajsdfa894uqp0394u]=asfa-9w=47rta08ygfoa8hfv7qa43ytalsdkf
   lifetime: 604800000

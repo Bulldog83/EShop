@@ -11,7 +11,9 @@ import ru.bulldog.eshop.service.specifications.ProductSpecificationService;
 
 import javax.persistence.EntityNotFoundException;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static ru.bulldog.eshop.util.EntityConverter.PRODUCT_TO_DTO_FACTORY;
 
@@ -30,9 +32,17 @@ public class ProductController {
 
 	@GetMapping
 	public Page<ProductDTO> showProducts(@RequestParam Map<String, String> params) {
-		int pageIndex = Integer.parseInt(params.remove("page"));
+		int pageIndex = 0;
+		if (params.containsKey("page")) {
+			pageIndex = Integer.parseInt(params.remove("page"));
+		}
 		Specification<Product> specification = specificationService.buildSpecification(params);
 		return productService.getPage(pageIndex - 1, 10, specification).map(PRODUCT_TO_DTO_FACTORY);
+	}
+
+	@GetMapping("/all")
+	public List<ProductDTO> getAllProducts() {
+		return productService.getAll().stream().map(PRODUCT_TO_DTO_FACTORY).collect(Collectors.toList());
 	}
 
 	@GetMapping("/{id}")

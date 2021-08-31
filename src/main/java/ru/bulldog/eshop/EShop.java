@@ -3,11 +3,10 @@ package ru.bulldog.eshop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-@EnableEurekaServer
+@EnableEurekaClient
 @SpringBootApplication
 @EnableAspectJAutoProxy
 public class EShop {
