@@ -1,6 +1,5 @@
 package ru.bulldog.eshop.soap.service;
 
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -8,7 +7,6 @@ import reactor.core.publisher.Mono;
 import ru.bulldog.eshop.dto.ProductDTO;
 import ru.bulldog.eshop.ws.products.ProductWS;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +15,8 @@ import java.util.function.Function;
 
 @Service
 public class ProductService {
+
+	private final static String BASE_URI = "http://service-main/api/v1/products";
 
 	public final static Function<ProductDTO, ProductWS> PRODUCT_TO_WS_FACTORY = product -> {
 		ProductWS productWS = new ProductWS();
@@ -27,23 +27,21 @@ public class ProductService {
 		return productWS;
 	};
 
-	private WebClient webClient;
+	private final WebClient webClient;
 
-	@PostConstruct
-	private void postInit() {
-		this.webClient = WebClient.create("http://service-main");
+	public ProductService(WebClient webClient) {
+		this.webClient = webClient;
 	}
 
 	public List<ProductDTO> getAll() {
 		try {
 			CompletableFuture<List<ProductDTO>> futureProducts = new CompletableFuture<>();
 			Flux<ProductDTO> productsFlux = webClient.get()
-					.uri("/api/v1/products/all")
+					.uri(BASE_URI + "/all")
 					.retrieve()
 					.bodyToFlux(ProductDTO.class);
 			Mono<List<ProductDTO>> productsMono = productsFlux.collectList();
-			productsFlux.doOnError(futureProducts::completeExceptionally);
-			productsMono.doOnSuccess(futureProducts::complete);
+			productsMono.subscribe(futureProducts::complete, futureProducts::completeExceptionally);
 			return futureProducts.join();
 		} catch (Exception ex) {
 			return new ArrayList<>();
@@ -54,11 +52,10 @@ public class ProductService {
 		try {
 			CompletableFuture<ProductDTO> futureProduct = new CompletableFuture<>();
 			Mono<ProductDTO> productMono = webClient.get()
-					.uri("/api/v1/products/" + id)
+					.uri(BASE_URI + "/" + id)
 					.retrieve()
 					.bodyToMono(ProductDTO.class);
-			productMono.doOnSuccess(futureProduct::complete);
-			productMono.doOnError(futureProduct::completeExceptionally);
+			productMono.subscribe(futureProduct::complete, futureProduct::completeExceptionally);
 			return Optional.of(futureProduct.join());
 		} catch (Exception ex) {
 			return Optional.empty();
