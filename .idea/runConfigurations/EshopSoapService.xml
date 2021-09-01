@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="EshopSoapService" type="Application" factoryName="Application" nameIsGenerated="true">
-    <option name="MAIN_CLASS_NAME" value="ru.bulldog.eshop.soap.EshopSoapService" />
+    <option name="MAIN_CLASS_NAME" value="bulldog.eshop.soap.EshopSoapService" />
     <module name="EShop.service-soap.main" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/run/" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="ru.bulldog.eshop.soap.*" />
+        <option name="PATTERN" value="bulldog.eshop.soap.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

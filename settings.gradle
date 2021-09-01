@@ -3,4 +3,5 @@ rootProject.name = 'EShop'
 include 'common-dto'
 include 'service-soap'
 include 'eureka-server'
+include 'service-shop'
 
