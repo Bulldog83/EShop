@@ -1,16 +1,14 @@
-package ru.bulldog.eshop.util;
+package ru.bulldog.eshop.security;
 
 import io.jsonwebtoken.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-import ru.bulldog.eshop.model.User;
+import ru.bulldog.eshop.dto.UserDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenUtil {
@@ -23,12 +21,9 @@ public class JwtTokenUtil {
 	@Value("${jwt.lifetime}")
 	private Integer jwtLifetime;
 
-	public String generateTokenString(User user) {
+	public String generateTokenString(UserDTO user) {
 		Map<String, Object> claims = new HashMap<>();
-		Set<String> rolesList = user.getAuthorities().stream()
-				.map(GrantedAuthority::getAuthority)
-				.collect(Collectors.toSet());
-		claims.put("authorities", rolesList);
+		claims.put("authorities", user.getAuthorities());
 		claims.put("session", user.getSessionId());
 
 		Date createdDate = new Date();

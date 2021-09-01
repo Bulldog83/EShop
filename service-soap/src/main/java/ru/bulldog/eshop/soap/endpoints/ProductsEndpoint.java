@@ -1,19 +1,18 @@
-package ru.bulldog.eshop.endpoints;
+package ru.bulldog.eshop.soap.endpoints;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-import ru.bulldog.eshop.service.ProductService;
+import ru.bulldog.eshop.soap.service.ProductService;
 import ru.bulldog.eshop.ws.products.*;
 
-import javax.xml.ws.WebEndpoint;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static ru.bulldog.eshop.util.EntityConverter.PRODUCT_TO_WS_FACTORY;
+import static ru.bulldog.eshop.soap.service.ProductService.PRODUCT_TO_WS_FACTORY;
 
 @Endpoint
 public class ProductsEndpoint {

@@ -1,7 +1,5 @@
 package ru.bulldog.eshop.dto;
 
-import ru.bulldog.eshop.model.Product;
-
 import java.math.BigDecimal;
 
 public class ProductDTO {

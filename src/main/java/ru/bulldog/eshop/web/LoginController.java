@@ -12,16 +12,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bulldog.eshop.dto.AuthRequest;
 import ru.bulldog.eshop.dto.AuthResponse;
-import ru.bulldog.eshop.dto.UserDTO;
 import ru.bulldog.eshop.model.User;
 import ru.bulldog.eshop.service.UserService;
-import ru.bulldog.eshop.util.JwtToken;
-import ru.bulldog.eshop.util.JwtTokenUtil;
+import ru.bulldog.eshop.security.JwtToken;
+import ru.bulldog.eshop.security.JwtTokenUtil;
+import ru.bulldog.eshop.util.EntityConverter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static ru.bulldog.eshop.util.EntityConverter.USER_TO_DTO_FACTORY;
 
 @RestController
 public class LoginController {
@@ -54,7 +56,7 @@ public class LoginController {
 	public ResponseEntity<?> doLogin(@RequestBody AuthRequest authRequest) {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 		User user = (User) userService.loadUserByUsername(authRequest.getUsername());
-		String tokenString = jwtTokenUtil.generateTokenString(user);
+		String tokenString = jwtTokenUtil.generateTokenString(USER_TO_DTO_FACTORY.apply(user));
 		AuthResponse response = new AuthResponse();
 		response.setFirstname(user.getFirstName());
 		response.setLastname(user.getLastName());

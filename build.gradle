@@ -1,73 +1,53 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.2'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
-    id 'idea'
+    id 'org.springframework.boot' version '2.5.2' apply false
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE' apply false
 }
 
 group = 'ru.bulldog.eshop'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaVersion.VERSION_11
 
-configurations {
-    jaxb
+ext {
+    set('springCloudVersion', '2020.0.3')
 }
 
-repositories {
-    mavenCentral()
+allprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.4'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-web-services'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
     implementation 'org.aspectj:aspectjweaver:1.9.7'
     implementation 'org.flywaydb:flyway-core:7.14.0'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'com.h2database:h2:1.4.200'
 
-    implementation 'org.glassfish.jaxb:jaxb-runtime'
-    implementation 'javax.xml.bind:jaxb-api'
-    implementation 'wsdl4j:wsdl4j'
-
-    jaxb 'org.glassfish.jaxb:jaxb-xjc'
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.4'
+    implementation project(':common-dto')
 }
-
-test {
-    useJUnitPlatform()
-}
-
-sourceSets {
-    main {
-        java {
-            srcDir 'src/main/java'
-            srcDir 'src/generated/jaxb'
-        }
-    }
-}
-
-task genJaxb {
-    ext.sourcesDir = "src/generated/jaxb"
-    ext.schema = "src/main/resources/products.xsd"
-
-    outputs.dir sourcesDir
-
-    doLast() {
-        project.ant {
-            taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
-                    classpath: configurations.jaxb.asPath
-            mkdir(dir: sourcesDir)
-
-            xjc(destdir: sourcesDir, schema: schema) {
-                arg(value: "-wsdl")
-                produces(dir: sourcesDir, includes: "**/*.java")
-            }
-        }
-    }
-}
-
-compileJava.dependsOn genJaxb

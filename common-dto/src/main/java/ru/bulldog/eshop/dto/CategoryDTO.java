@@ -1,11 +1,5 @@
 package ru.bulldog.eshop.dto;
 
-import ru.bulldog.eshop.model.Category;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class CategoryDTO {
 	private Long id;
 	private String title;

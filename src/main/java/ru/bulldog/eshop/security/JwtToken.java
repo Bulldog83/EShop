@@ -1,4 +1,4 @@
-package ru.bulldog.eshop.util;
+package ru.bulldog.eshop.security;
 
 import java.util.Set;
 import java.util.UUID;
