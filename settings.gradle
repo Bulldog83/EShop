@@ -1,7 +1,8 @@
 rootProject.name = 'EShop'
 
 include 'common-dto'
-include 'service-soap'
-include 'eureka-server'
+include 'service-discovery'
+include 'service-gateway'
 include 'service-shop'
+include 'service-soap'
 

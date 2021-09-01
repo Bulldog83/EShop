@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: service-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: service-soap
+          uri: lb://service-soap
+          predicates:
+            - Path=/ws/**
+
+        - id: default-route
+          uri: lb://service-shop
+          predicates:
+            - Path=/**
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://${eureka.instance.hostname}:8091/eureka}
+    fetchRegistry: true

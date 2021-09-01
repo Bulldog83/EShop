@@ -16,7 +16,7 @@ import java.util.function.Function;
 @Service
 public class ProductService {
 
-	private final static String BASE_URI = "http://service-shop/api/v1/products";
+	private final static String BASE_URI = "lb://service-shop/api/v1/products";
 
 	public final static Function<ProductDTO, ProductWS> PRODUCT_TO_WS_FACTORY = product -> {
 		ProductWS productWS = new ProductWS();

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 spring:
   application:
     name: service-shop
@@ -20,9 +20,11 @@ spring:
       settings:
         web-allow-others: false
 eureka:
+  instance:
+    hostname: localhost
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8091/eureka}
+      defaultZone: ${EUREKA_URI:http://${eureka.instance.hostname}:8091/eureka}
     fetchRegistry: true
 jwt:
   secret: kajsdfa894uqp0394u]=asfa-9w=47rta08ygfoa8hfv7qa43ytalsdkf

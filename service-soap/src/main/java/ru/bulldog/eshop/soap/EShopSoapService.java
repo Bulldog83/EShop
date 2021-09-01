@@ -6,8 +6,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @EnableEurekaClient
 @SpringBootApplication
-public class EshopSoapService {
+public class EShopSoapService {
 	public static void main(String[] args) {
-		SpringApplication.run(EshopSoapService.class, args);
+		SpringApplication.run(EShopSoapService.class, args);
 	}
 }

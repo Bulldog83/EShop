@@ -30,7 +30,7 @@ allprojects {
     }
 
     dependencies {
-        testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.4'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
 
     test {

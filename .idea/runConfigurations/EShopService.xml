@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="EShopMainService" type="Application" factoryName="Application">
+  <configuration default="false" name="EShopService" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="ru.bulldog.eshop.EShop" />
-    <module name="EShop.main" />
+    <module name="EShop.service-shop.main" />
     <option name="WORKING_DIRECTORY" value="$ProjectFileDir$/run" />
     <method v="2">
       <option name="Make" enabled="true" />
