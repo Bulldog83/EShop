@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DiscoveryService" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="ru.bulldog.eshop.eureka.EShopEurekaServer" />
+    <option name="MAIN_CLASS_NAME" value="ru.bulldog.eshop.eureka.EShopDiscoveryService" />
     <module name="EShop.service-discovery.main" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/run" />
     <extension name="coverage">
