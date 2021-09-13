@@ -5,7 +5,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.bulldog.eshop.dto.ProductDTO;
-import ru.bulldog.eshop.ws.products.ProductWS;
+import bulldog.eshop.ws.products.ProductWS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.function.Function;
 @Service
 public class ProductService {
 
-	private final static String BASE_URI = "http://service-main/api/v1/products";
+	private final static String BASE_URI = "lb://service-shop/api/v1/products";
 
 	public final static Function<ProductDTO, ProductWS> PRODUCT_TO_WS_FACTORY = product -> {
 		ProductWS productWS = new ProductWS();

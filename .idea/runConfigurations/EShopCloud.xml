@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="EShopCloud" type="CompoundRunConfigurationType">
+    <toRun name="3.EShopGatewayService" type="Application" />
+    <toRun name="1.EShopMainService" type="Application" />
+    <toRun name="0.EShopDiscoveryService" type="Application" />
+    <toRun name="2.EShopSoapService" type="Application" />
+    <method v="2" />
+  </configuration>
+</component>
