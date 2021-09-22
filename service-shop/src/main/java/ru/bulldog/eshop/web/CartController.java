@@ -38,7 +38,6 @@ public class CartController {
 			if (!cart.addItem(id)) {
 				productService.getById(id).ifPresent(product -> cart.addItem(PRODUCT_TO_DTO_FACTORY.apply(product)));
 			}
-			cartService.updateCart(session, cart);
 		});
 	}
 
@@ -47,7 +46,6 @@ public class CartController {
 		SessionUtil.getSession(request).ifPresent(session -> {
 			CartDTO cart = cartService.getCart(session);
 			cart.removeItem(id);
-			cartService.updateCart(session, cart);
 		});
 	}
 
@@ -56,19 +54,23 @@ public class CartController {
 		SessionUtil.getSession(request).ifPresent(session -> {
 			CartDTO cart = cartService.getCart(session);
 			cart.deleteItem(id);
-			cartService.updateCart(session, cart);
 		});
 	}
 
 	@PutMapping("/merge")
 	public void mergeCarts(HttpServletRequest request, @RequestParam("session") UUID oldSession) {
-		SessionUtil.getSession(request).ifPresent(session ->
-				cartService.removeCart(oldSession).ifPresent(oldCart ->
-						cartService.mergeCarts(session, oldCart)));
+		SessionUtil.getSession(request).ifPresent(session -> {
+			CartDTO cart = cartService.getCart(session);
+			CartDTO oldCart = cartService.getCart(oldSession);
+			cart.merge(oldCart);
+		});
 	}
 
 	@PutMapping("/clear")
 	public void clearCart(HttpServletRequest request) {
-		SessionUtil.getSession(request).ifPresent(cartService::clearCart);
+		SessionUtil.getSession(request).ifPresent(session -> {
+			CartDTO cart = cartService.getCart(session);
+			cart.clear();
+		});
 	}
 }

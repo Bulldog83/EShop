@@ -1,60 +1,40 @@
 package ru.bulldog.eshop.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import ru.bulldog.eshop.dto.CartDTO;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class CartService {
 
-	private static final String CART_PREFIX = "CART_";
+	private Map<UUID, CartDTO> carts;
 
-	private final RedisTemplate<String, Object> redisTemplate;
+	public CartService() {}
 
-	@Autowired
-	public CartService(RedisTemplate<String, Object> redisTemplate) {
-		this.redisTemplate = redisTemplate;
+	@PostConstruct
+	private void postInit() {
+		this.carts = new HashMap<>();
 	}
 
 	public CartDTO getCart(UUID session) {
-		String cartKey = CART_PREFIX + session;
-		if (Boolean.TRUE.equals(redisTemplate.hasKey(cartKey))) {
-			return (CartDTO) redisTemplate.opsForValue().get(cartKey);
+		if (carts.containsKey(session)) {
+			return carts.get(session);
 		}
 		CartDTO cart = new CartDTO(session);
-		updateCart(session, cart);
+		carts.put(session, cart);
 
 		return cart;
 	}
 
-	public void mergeCarts(UUID session, CartDTO cart) {
-		CartDTO cartDTO = getCart(session);
-		cartDTO.merge(cart);
-		updateCart(session, cartDTO);
+	public void registerCart(CartDTO cartDTO) {
+		carts.put(cartDTO.getSession(), cartDTO);
 	}
 
-	public void clearCart(UUID session) {
-		CartDTO cartDTO = getCart(session);
-		cartDTO.clear();
-		updateCart(session, cartDTO);
-	}
-
-	public Optional<CartDTO> removeCart(UUID session) {
-		String cartKey = CART_PREFIX + session;
-		if (Boolean.TRUE.equals(redisTemplate.hasKey(cartKey))) {
-			CartDTO cartDTO = (CartDTO) redisTemplate.opsForValue().get(cartKey);
-			redisTemplate.delete(cartKey);
-			return Optional.ofNullable(cartDTO);
-		}
-		return Optional.empty();
-	}
-
-	public void updateCart(UUID session, CartDTO cart) {
-		redisTemplate.opsForValue().set(CART_PREFIX + session, cart);
+	public void removeCart(UUID session) {
+		carts.remove(session);
 	}
 }
