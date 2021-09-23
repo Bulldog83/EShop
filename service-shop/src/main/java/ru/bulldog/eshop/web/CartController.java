@@ -10,19 +10,15 @@ import ru.bulldog.eshop.util.SessionUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
-import static ru.bulldog.eshop.util.EntityConverter.PRODUCT_TO_DTO_FACTORY;
-
 @RestController
 @RequestMapping("/api/v1/carts")
 public class CartController {
 
 	private final CartService cartService;
-	private final ProductService productService;
 
 	@Autowired
 	public CartController(CartService cartService, ProductService productService) {
 		this.cartService = cartService;
-		this.productService = productService;
 	}
 
 	@GetMapping
@@ -33,31 +29,17 @@ public class CartController {
 
 	@PutMapping("/add/{id}")
 	public void addItem(HttpServletRequest request, @PathVariable long id) {
-		SessionUtil.getSession(request).ifPresent(session -> {
-			CartDTO cart = cartService.getCart(session);
-			if (!cart.addItem(id)) {
-				productService.getById(id).ifPresent(product -> cart.addItem(PRODUCT_TO_DTO_FACTORY.apply(product)));
-			}
-			cartService.updateCart(session, cart);
-		});
+		SessionUtil.getSession(request).ifPresent(session -> cartService.addToCart(session, id));
 	}
 
 	@PutMapping("/remove/{id}")
 	public void removeItem(HttpServletRequest request, @PathVariable long id) {
-		SessionUtil.getSession(request).ifPresent(session -> {
-			CartDTO cart = cartService.getCart(session);
-			cart.removeItem(id);
-			cartService.updateCart(session, cart);
-		});
+		SessionUtil.getSession(request).ifPresent(session -> cartService.removeFromCart(session, id));
 	}
 
 	@PutMapping("/delete/{id}")
 	public void deleteItem(HttpServletRequest request, @PathVariable long id) {
-		SessionUtil.getSession(request).ifPresent(session -> {
-			CartDTO cart = cartService.getCart(session);
-			cart.deleteItem(id);
-			cartService.updateCart(session, cart);
-		});
+		SessionUtil.getSession(request).ifPresent(session -> cartService.deleteFromCart(session, id));
 	}
 
 	@PutMapping("/merge")

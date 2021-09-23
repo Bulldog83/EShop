@@ -43,6 +43,13 @@ public class Product {
 		this.price = price;
 	}
 
+	public Product(long id, String title, BigDecimal price, Category category) {
+		this.id = id;
+		this.title = title;
+		this.price = price;
+		this.category = category;
+	}
+
 	public Long getId() {
 		return id;
 	}
