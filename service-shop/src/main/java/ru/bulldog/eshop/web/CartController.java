@@ -44,9 +44,10 @@ public class CartController {
 
 	@PutMapping("/merge")
 	public void mergeCarts(HttpServletRequest request, @RequestParam("session") UUID oldSession) {
-		SessionUtil.getSession(request).ifPresent(session ->
-				cartService.removeCart(oldSession).ifPresent(oldCart ->
-						cartService.mergeCarts(session, oldCart)));
+		SessionUtil.getSession(request).ifPresent(session -> {
+			CartDTO oldCart = cartService.getCart(oldSession);
+			cartService.mergeCarts(session, oldCart);
+		});
 	}
 
 	@PutMapping("/clear")
