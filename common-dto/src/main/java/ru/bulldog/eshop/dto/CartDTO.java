@@ -1,11 +1,14 @@
 package ru.bulldog.eshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CartDTO {
 
 	private UUID session;
@@ -93,17 +96,17 @@ public class CartDTO {
 	public void merge(CartDTO oldCart) {
 		oldCart.getItems().forEach(item -> {
 			int idx = items.indexOf(item);
-			if (idx >= 0) {
-				items.get(idx).addCount(item.getCount());
-			} else {
+			if (idx < 0) {
 				items.add(item);
+			} else {
+				items.get(idx).addCount(item.getCount());
 			}
 		});
 		recalculate();
 	}
 
 	public void clear() {
-		sumTotal = BigDecimal.ZERO;
+		this.sumTotal = BigDecimal.ZERO;
 		items.clear();
 	}
 
@@ -112,7 +115,8 @@ public class CartDTO {
 	}
 
 	private void recalculate() {
-		sumTotal = BigDecimal.ZERO;
-		items.forEach(item -> sumTotal = sumTotal.add(item.getSum()));
+		this.sumTotal = items.stream()
+				.map(OrderItemDTO::getSum)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 }

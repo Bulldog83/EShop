@@ -1,3 +1,7 @@
 
 group = 'ru.bulldog.eshop.dto'
 version = '0.0.1-SNAPSHOT'
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.5'
+}

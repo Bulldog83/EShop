@@ -11,7 +11,8 @@ public class ProductDTO {
 
 	public ProductDTO() {}
 
-	public ProductDTO(String title, BigDecimal price, String category) {
+	public ProductDTO(Long id, String title, BigDecimal price, String category) {
+		this.id = id;
 		this.title = title;
 		this.price = price;
 		this.category = category;
