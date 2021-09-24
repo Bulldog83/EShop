@@ -37,7 +37,7 @@ public class ProductController {
 			pageIndex = Integer.parseInt(params.remove("page"));
 		}
 		Specification<Product> specification = specificationService.buildSpecification(params);
-		return productService.getPage(pageIndex - 1, 10, specification).map(PRODUCT_TO_DTO_FACTORY);
+		return productService.getPage(pageIndex - 1, 12, specification).map(PRODUCT_TO_DTO_FACTORY);
 	}
 
 	@GetMapping("/all")

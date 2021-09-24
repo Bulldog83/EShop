@@ -6,10 +6,18 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "products")
+@NamedEntityGraph(
+	name = "Product.forPages",
+	attributeNodes = {
+		@NamedAttributeNode("category"),
+		@NamedAttributeNode("pictures")
+	})
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +26,7 @@ public class Product {
 	@Column
 	private String title;
 	@Column
-	private BigDecimal price;
+	private BigDecimal price = BigDecimal.ZERO;
 	@Column
 	@CreationTimestamp
 	private LocalDateTime created;
@@ -29,6 +37,12 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name = "category")
 	private Category category;
+
+	@ManyToMany
+	@JoinTable(name = "products_pictures",
+		joinColumns = @JoinColumn(name = "product_id"),
+		inverseJoinColumns = @JoinColumn(name = "picture_id"))
+	private List<Picture> pictures = new ArrayList<>();
 
 	public Product() {}
 
@@ -82,20 +96,20 @@ public class Product {
 		this.category = category;
 	}
 
+	public List<Picture> getPictures() {
+		return pictures;
+	}
+
+	public void setPictures(List<Picture> pictures) {
+		this.pictures = pictures;
+	}
+
 	public LocalDateTime getCreated() {
 		return created;
 	}
 
-	public void setCreated(LocalDateTime created) {
-		this.created = created;
-	}
-
 	public LocalDateTime getUpdated() {
 		return updated;
-	}
-
-	public void setUpdated(LocalDateTime updated) {
-		this.updated = updated;
 	}
 
 	@Override

@@ -15,6 +15,8 @@ public class EntityConverter {
 		productDTO.setTitle(product.getTitle());
 		productDTO.setCategory(product.getCategory().getTitle());
 		productDTO.setPrice(product.getPrice());
+		productDTO.setPictures(product.getPictures().stream()
+				.map(Picture::getSource).collect(Collectors.toList()));
 
 		return productDTO;
 	};
