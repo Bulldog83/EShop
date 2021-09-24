@@ -1,7 +1,6 @@
 package ru.bulldog.eshop.web;
 
 import org.springframework.web.bind.annotation.*;
-import ru.bulldog.eshop.dto.CartDTO;
 import ru.bulldog.eshop.dto.OrderDTO;
 import ru.bulldog.eshop.errors.EntityValidationException;
 import ru.bulldog.eshop.model.Order;
@@ -48,8 +47,7 @@ public class OrderController {
 		ValidationResult validationResult = Validator.validate(orderDTO);
 		if (validationResult.isValid()) {
 			Order order = orderService.create(orderDTO);
-			CartDTO cart = cartService.getCart(order.getSessionId());
-			cart.clear();
+			cartService.clearCart(order.getSessionId());
 			return ORDER_TO_DTO_FACTORY.apply(order);
 		}
 		throw new EntityValidationException(validationResult.getErrors());

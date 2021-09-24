@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.bulldog.eshop.dto.CartDTO;
-import ru.bulldog.eshop.dto.ProductDTO;
 import ru.bulldog.eshop.model.Category;
 import ru.bulldog.eshop.model.Product;
 import ru.bulldog.eshop.service.CartService;
 import ru.bulldog.eshop.service.ProductService;
-import ru.bulldog.eshop.util.EntityConverter;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -54,11 +52,8 @@ public class CartTests {
 	}
 
 	@Test
-	public void getAndRemoveCartTest() {
+	public void getCartTest() {
 		Assertions.assertNotNull(cartService.getCart(sessionId));
-
-		Optional<CartDTO> removedCart = cartService.removeCart(sessionId);
-		Assertions.assertTrue(removedCart.isPresent());
 	}
 
 	@Test
