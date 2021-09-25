@@ -16,7 +16,8 @@
 		<div class="card mb-3" style="max-width: 540px;">
 			<div class="row g-0">
 				<div class="col-md-4 p-2">
-					<img src="{{product.pictures[0]}}" class="img-fluid rounded-start" alt="{{product.title}}">
+					<img ng-show="product.pictures.length > 0" src="{{product.pictures[0]}}" class="img-fluid rounded-start" alt="{{product.title}}">
+					<img ng-show="product.pictures.length == 0" src="/img/no-photo.svg" class="img-fluid rounded-start" alt="No photo available.">
 				</div>
 				<div class="col-md-8">
 					<div class="card-body">

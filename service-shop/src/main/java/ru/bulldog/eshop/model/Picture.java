@@ -4,7 +4,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.net.URL;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,7 +14,7 @@ public class Picture {
 	@Column(name = "raw_id", nullable = false)
 	private Long id;
 	@Column(unique = true)
-	private URL source;
+	private String source;
 	@Column
 	@CreationTimestamp
 	private LocalDateTime created;
@@ -33,11 +32,11 @@ public class Picture {
 		this.id = id;
 	}
 
-	public URL getSource() {
+	public String getSource() {
 		return source;
 	}
 
-	public void setSource(URL source) {
+	public void setSource(String source) {
 		this.source = source;
 	}
 

@@ -1,7 +1,6 @@
 package ru.bulldog.eshop.dto;
 
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.List;
 
 public class ProductDTO {
@@ -10,7 +9,7 @@ public class ProductDTO {
 	private String title;
 	private BigDecimal price;
 	private String category;
-	private List<URL> pictures;
+	private List<String> pictures;
 
 	public ProductDTO() {}
 
@@ -46,11 +45,11 @@ public class ProductDTO {
 		this.category = category;
 	}
 
-	public List<URL> getPictures() {
+	public List<String> getPictures() {
 		return pictures;
 	}
 
-	public void setPictures(List<URL> pictures) {
+	public void setPictures(List<String> pictures) {
 		this.pictures = pictures;
 	}
 }

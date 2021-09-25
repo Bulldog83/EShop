@@ -3,7 +3,7 @@ package ru.bulldog.eshop.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import ru.bulldog.eshop.dto.CartDTO;
+import ru.bulldog.eshop.model.Cart;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -24,15 +24,15 @@ public class CartService {
 		this.productService = productService;
 	}
 
-	public CartDTO getCart(UUID session) {
+	public Cart getCart(UUID session) {
 		String cartKey = makeKey(session);
 		if (Boolean.TRUE.equals(redisTemplate.hasKey(cartKey))) {
-			return (CartDTO) redisTemplate.opsForValue().get(cartKey);
+			return (Cart) redisTemplate.opsForValue().get(cartKey);
 		}
-		CartDTO newCart = new CartDTO(session);
-		redisTemplate.opsForValue().set(cartKey, newCart);
+		Cart cart = new Cart(session);
+		redisTemplate.opsForValue().set(cartKey, cart);
 
-		return newCart;
+		return cart;
 	}
 
 	public void addToCart(UUID session, long itemId) {
@@ -52,7 +52,7 @@ public class CartService {
 		updateCart(session, cart -> cart.deleteItem(itemId));
 	}
 
-	public void mergeCarts(UUID session, CartDTO otherCart) {
+	public void mergeCarts(UUID session, Cart otherCart) {
 		updateCart(session, cart -> {
 			cart.merge(otherCart);
 			removeCart(otherCart.getSession());
@@ -60,11 +60,11 @@ public class CartService {
 	}
 
 	public void clearCart(UUID session) {
-		updateCart(session, CartDTO::clear);
+		updateCart(session, Cart::clear);
 	}
 
-	private void updateCart(UUID session, Consumer<CartDTO> action) {
-		CartDTO cart = getCart(session);
+	private void updateCart(UUID session, Consumer<Cart> action) {
+		Cart cart = getCart(session);
 		action.accept(cart);
 		redisTemplate.opsForValue().set(makeKey(session), cart);
 	}
