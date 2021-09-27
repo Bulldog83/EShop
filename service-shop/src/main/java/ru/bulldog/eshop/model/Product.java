@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "products")
 @NamedEntityGraph(
-	name = "Product.forPages",
+	name = "Product.withData",
 	attributeNodes = {
 		@NamedAttributeNode("category"),
 		@NamedAttributeNode("pictures")

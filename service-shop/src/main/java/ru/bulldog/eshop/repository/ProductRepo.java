@@ -9,9 +9,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import ru.bulldog.eshop.model.Product;
 
+import java.util.Optional;
+
 @Repository
 public interface ProductRepo extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 	@Override
-	@EntityGraph(value = "Product.forPages")
+	@EntityGraph(value = "Product.withData")
 	Page<Product> findAll(Specification<Product> spec, Pageable pageable);
+	@Override
+	@EntityGraph(value = "Product.withData")
+	Optional<Product> findById(Long id);
 }

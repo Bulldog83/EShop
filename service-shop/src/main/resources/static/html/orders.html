@@ -21,5 +21,5 @@
 	</tr>
 	</tbody>
 </table>
-<p ng-show="isAuthenticated() && (!orders || orders.empty)">There are no orders.</p>
+<p ng-show="isAuthenticated() && (!orders || orders.length == 0)">There are no orders.</p>
 <p ng-show="!isAuthenticated()">Login to view orders.</p>
