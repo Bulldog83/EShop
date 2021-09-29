@@ -3,9 +3,10 @@ package ru.bulldog.eshop.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import ru.bulldog.eshop.dto.CartDTO;
+import ru.bulldog.eshop.model.Cart;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 import static ru.bulldog.eshop.util.EntityConverter.PRODUCT_TO_DTO_FACTORY;
 
@@ -23,64 +24,59 @@ public class CartService {
 		this.productService = productService;
 	}
 
-	public CartDTO getCart(UUID session) {
-		String cartKey = CART_PREFIX + session;
+	public Cart getCart(UUID session) {
+		String cartKey = makeKey(session);
 		if (Boolean.TRUE.equals(redisTemplate.hasKey(cartKey))) {
-			return (CartDTO) redisTemplate.opsForValue().get(cartKey);
+			return (Cart) redisTemplate.opsForValue().get(cartKey);
 		}
-		CartDTO cart = new CartDTO(session);
-		updateCart(session, cart);
+		Cart cart = new Cart(session);
+		redisTemplate.opsForValue().set(cartKey, cart);
 
 		return cart;
 	}
 
 	public void addToCart(UUID session, long itemId) {
-		CartDTO cart = getCart(session);
-		if (!cart.addItem(itemId)) {
-			productService.getById(itemId).ifPresent(product ->
-					cart.addItem(PRODUCT_TO_DTO_FACTORY.apply(product)));
-		}
-		updateCart(session, cart);
+		updateCart(session, cart -> {
+			if (!cart.addItem(itemId)) {
+				productService.getById(itemId).ifPresent(product ->
+						cart.addItem(PRODUCT_TO_DTO_FACTORY.apply(product)));
+			}
+		});
 	}
 
 	public void removeFromCart(UUID session, long itemId) {
-		CartDTO cart = getCart(session);
-		cart.removeItem(itemId);
-		updateCart(session, cart);
+		updateCart(session, cart -> cart.removeItem(itemId));
 	}
 
 	public void deleteFromCart(UUID session, long itemId) {
-		CartDTO cart = getCart(session);
-		cart.deleteItem(itemId);
-		updateCart(session, cart);
+		updateCart(session, cart -> cart.deleteItem(itemId));
 	}
 
-	public void mergeCarts(UUID session, CartDTO cart) {
-		CartDTO cartDTO = getCart(session);
-		cartDTO.merge(cart);
-		updateCart(session, cartDTO);
-		removeCart(cart.getSession());
+	public void mergeCarts(UUID session, Cart otherCart) {
+		updateCart(session, cart -> {
+			cart.merge(otherCart);
+			removeCart(otherCart.getSession());
+		});
 	}
 
 	public void clearCart(UUID session) {
-		CartDTO cartDTO = getCart(session);
-		if (!cartDTO.isEmpty()) {
-			cartDTO.clear();
-			updateCart(session, cartDTO);
-		}
+		updateCart(session, Cart::clear);
 	}
 
-	public Optional<CartDTO> removeCart(UUID session) {
-		String cartKey = CART_PREFIX + session;
+	private void updateCart(UUID session, Consumer<Cart> action) {
+		Cart cart = getCart(session);
+		action.accept(cart);
+		redisTemplate.opsForValue().set(makeKey(session), cart);
+	}
+
+	private void removeCart(UUID session) {
+		String cartKey = makeKey(session);
 		if (Boolean.TRUE.equals(redisTemplate.hasKey(cartKey))) {
-			CartDTO cartDTO = (CartDTO) redisTemplate.opsForValue().get(cartKey);
 			redisTemplate.delete(cartKey);
-			return Optional.ofNullable(cartDTO);
 		}
-		return Optional.empty();
 	}
 
-	public void updateCart(UUID session, CartDTO cart) {
-		redisTemplate.opsForValue().set(CART_PREFIX + session, cart);
+	private String makeKey(UUID session) {
+		return CART_PREFIX + session;
 	}
 }

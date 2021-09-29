@@ -25,6 +25,8 @@
       <writeAnnotation name="org.springframework.beans.factory.annotation.Value" />
       <writeAnnotation name="org.springframework.beans.factory.annotation.Autowired" />
       <writeAnnotation name="org.springframework.boot.test.mock.mockito.MockBean" />
+      <writeAnnotation name="org.hibernate.annotations.CreationTimestamp" />
+      <writeAnnotation name="org.hibernate.annotations.UpdateTimestamp" />
     </writeAnnotations>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

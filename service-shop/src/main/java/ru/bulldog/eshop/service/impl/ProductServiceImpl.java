@@ -1,5 +1,6 @@
 package ru.bulldog.eshop.service.impl;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.bulldog.eshop.repository.ProductRepo;
 import ru.bulldog.eshop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

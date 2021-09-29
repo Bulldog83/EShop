@@ -11,44 +11,37 @@
 		<button type="submit" class="btn btn-primary ml-1">Apply</button>
 	</div>
 </form>
-<table class="table">
-	<thead class="table-secondary">
-	<tr>
-		<th scope="col">#</th>
-		<th scope="col">ID</th>
-		<th scope="col">Category</th>
-		<th scope="col">Title</th>
-		<th scope="col">Price</th>
-		<th scope="col">&nbsp;</th>
-		<th scope="col">&nbsp;</th>
-		<th scope="col">&nbsp;</th>
-	</tr>
-	</thead>
-	<tbody>
-	<tr ng-repeat="product in page.content">
-		<th scope="row">{{page.size * page.number + $index + 1}}</th>
-		<td>{{product.id}}</td>
-		<td>{{product.category}}</td>
-		<td>{{product.title}}</td>
-		<td>{{product.price}}</td>
-		<td>
-			<button type="button" class="btn btn-outline-primary" title="Details">
-				<i class="bi bi-info-circle-fill"></i>
-			</button>
-		</td>
-		<td>
-			<button type="button" class="btn btn-outline-primary" ng-click="addToCart(product.id)" title="To Cart">
-				<i class="bi bi-basket-fill"></i>
-			</button>
-		</td>
-		<td ng-show="hasPermission('MANAGE_PRODUCTS')">
-			<button type="button" class="btn btn-outline-danger" ng-click="deleteProduct($index, product.id)" title="Delete">
-				<i class="bi bi-x-square-fill"></i>
-			</button>
-		</td>
-	</tr>
-	</tbody>
-</table>
+<div class="row row-cols-1 row-cols-md-3 g-2 mt-3">
+	<div ng-repeat="product in page.content" class="col">
+		<div class="card mb-3" style="max-width: 540px;">
+			<div class="row g-0">
+				<div class="col-md-4 p-2">
+					<img ng-show="product.pictures.length > 0" src="{{product.pictures[0]}}" class="img-fluid rounded-start" alt="{{product.title}}">
+					<img ng-show="product.pictures.length == 0" src="/img/no-photo.svg" class="img-fluid rounded-start" alt="No photo available.">
+				</div>
+				<div class="col-md-8">
+					<div class="card-body">
+						<h5 class="card-title mb-0">#{{product.id}} {{product.title}}</h5>
+						<p class="card-text mt-0"><small class="text-muted">{{product.category}}</small></p>
+						<h2 class="card-text text-end">{{product.price}}</h2>
+						<div class="card-footer bg-transparent text-end p-0 pt-3">
+							<button type="button" class="btn btn-outline-primary" title="Details">
+								<i class="bi bi-info-circle-fill"></i>
+							</button>
+							<button type="button" class="btn btn-outline-primary" ng-click="addToCart(product.id)" title="To Cart">
+								<i class="bi bi-basket-fill"></i>
+							</button>
+							<button ng-show="hasPermission('MANAGE_PRODUCTS')" type="button" class="btn btn-outline-danger"
+							        ng-click="deleteProduct($index, product.id)" title="Delete">
+								<i class="bi bi-x-square-fill"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <nav aria-label="page navigation">
 	<ul class="pagination">
 		<li ng-class="['page-item', {'disabled': page.first}]">

@@ -9,13 +9,11 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.bulldog.eshop.dto.CartDTO;
-import ru.bulldog.eshop.dto.ProductDTO;
+import ru.bulldog.eshop.model.Cart;
 import ru.bulldog.eshop.model.Category;
 import ru.bulldog.eshop.model.Product;
 import ru.bulldog.eshop.service.CartService;
 import ru.bulldog.eshop.service.ProductService;
-import ru.bulldog.eshop.util.EntityConverter;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -54,11 +52,8 @@ public class CartTests {
 	}
 
 	@Test
-	public void getAndRemoveCartTest() {
+	public void getCartTest() {
 		Assertions.assertNotNull(cartService.getCart(sessionId));
-
-		Optional<CartDTO> removedCart = cartService.removeCart(sessionId);
-		Assertions.assertTrue(removedCart.isPresent());
 	}
 
 	@Test
@@ -73,7 +68,7 @@ public class CartTests {
 				.orElse(BigDecimal.ZERO);
 
 		Mockito.verify(productService, Mockito.times(1)).getById(ArgumentMatchers.eq(1L));
-		CartDTO cart = cartService.getCart(sessionId);
+		Cart cart = cartService.getCart(sessionId);
 		Assertions.assertFalse(cart.isEmpty());
 		Assertions.assertEquals(1, cart.getItems().size());
 		Assertions.assertEquals(3, cart.getItems().get(0).getCount());
@@ -88,7 +83,7 @@ public class CartTests {
 			cartService.addToCart(sessionId, 1L);
 		}
 		cartService.removeFromCart(sessionId, 1L);
-		CartDTO cart = cartService.getCart(sessionId);
+		Cart cart = cartService.getCart(sessionId);
 		Assertions.assertEquals(2, cart.getItems().get(0).getCount());
 	}
 
@@ -99,20 +94,20 @@ public class CartTests {
 			cartService.addToCart(sessionId, id);
 		});
 		cartService.deleteFromCart(sessionId, 1L);
-		CartDTO cart = cartService.getCart(sessionId);
+		Cart cart = cartService.getCart(sessionId);
 		Assertions.assertEquals(products.size() - 1, cart.getItems().size());
 	}
 
 	@Test
 	public void mergeCartsTest() {
-		CartDTO testCart = cartService.getCart(UUID.randomUUID());
+		Cart testCart = cartService.getCart(UUID.randomUUID());
 		products.forEach((id, product) -> {
 			Mockito.doReturn(Optional.of(product)).when(productService).getById(id);
 			testCart.addItem(PRODUCT_TO_DTO_FACTORY.apply(product));
 			cartService.addToCart(sessionId, id);
 		});
 		cartService.mergeCarts(sessionId, testCart);
-		CartDTO cart = cartService.getCart(sessionId);
+		Cart cart = cartService.getCart(sessionId);
 		Assertions.assertEquals(testCart.getItems().size(), cart.getItems().size());
 		Assertions.assertEquals(testCart.getSumTotal().multiply(BigDecimal.valueOf(2)), cart.getSumTotal());
 	}

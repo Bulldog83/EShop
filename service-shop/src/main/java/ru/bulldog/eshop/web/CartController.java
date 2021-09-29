@@ -2,7 +2,7 @@ package ru.bulldog.eshop.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.bulldog.eshop.dto.CartDTO;
+import ru.bulldog.eshop.model.Cart;
 import ru.bulldog.eshop.service.CartService;
 import ru.bulldog.eshop.service.ProductService;
 import ru.bulldog.eshop.util.SessionUtil;
@@ -22,7 +22,7 @@ public class CartController {
 	}
 
 	@GetMapping
-	public CartDTO getCart(HttpServletRequest request) {
+	public Cart getCart(HttpServletRequest request) {
 		return SessionUtil.getSession(request).map(cartService::getCart)
 				.orElseGet(() -> cartService.getCart(UUID.randomUUID()));
 	}
@@ -45,7 +45,7 @@ public class CartController {
 	@PutMapping("/merge")
 	public void mergeCarts(HttpServletRequest request, @RequestParam("session") UUID oldSession) {
 		SessionUtil.getSession(request).ifPresent(session -> {
-			CartDTO oldCart = cartService.getCart(oldSession);
+			Cart oldCart = cartService.getCart(oldSession);
 			cartService.mergeCarts(session, oldCart);
 		});
 	}
