@@ -1,1 +1,1 @@
-$eshop.controller('indexController', function($rootScope, $scope, $http) {});
+$eshop.controller('indexController', function($rootScope, $scope, $http, $q) {});
