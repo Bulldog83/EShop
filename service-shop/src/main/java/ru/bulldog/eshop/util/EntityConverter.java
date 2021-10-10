@@ -52,15 +52,46 @@ public class EntityConverter {
 		return orderItemDTO;
 	};
 
+	public final static Function<Address, AddressDTO> ADDRESS_TO_DTO_FACTORY = address -> {
+		AddressDTO addressDTO = new AddressDTO();
+		addressDTO.setId(address.getId());
+		addressDTO.setCountry(address.getCountry());
+		addressDTO.setZipCode(address.getZipCode());
+		addressDTO.setRegion(address.getRegion());
+		addressDTO.setCity(address.getCity());
+		addressDTO.setStreet(address.getStreet());
+		addressDTO.setHouse(address.getHouse());
+		addressDTO.setBuilding(address.getBuilding());
+		addressDTO.setApartment(address.getApartment());
+
+		return addressDTO;
+	};
+
+	public final static Function<AddressDTO, Address> ADDRESS_FACTORY = addressDTO -> {
+		Address address = new Address();
+		address.setId(addressDTO.getId());
+		address.setCountry(addressDTO.getCountry());
+		address.setZipCode(addressDTO.getZipCode());
+		address.setRegion(addressDTO.getRegion());
+		address.setCity(addressDTO.getCity());
+		address.setStreet(addressDTO.getStreet());
+		address.setHouse(addressDTO.getHouse());
+		address.setBuilding(addressDTO.getBuilding());
+		address.setApartment(addressDTO.getApartment());
+
+		return address;
+	};
+
 	public final static Function<Order, OrderDTO> ORDER_TO_DTO_FACTORY = order -> {
 		OrderDTO orderDTO = new OrderDTO();
 		orderDTO.setId(order.getId());
 		orderDTO.setSessionId(order.getSessionId());
-		orderDTO.setAddress(order.getAddress());
+		orderDTO.setAddress(ADDRESS_TO_DTO_FACTORY.apply(order.getAddress()));
 		orderDTO.setPhone(order.getPhone());
 		orderDTO.setSumTotal(order.getSumTotal());
 		orderDTO.setCreated(order.getCreated());
 		orderDTO.setItems(order.getItems().stream().map(ORDER_ITEM_TO_DTO_FACTORY).collect(Collectors.toList()));
+		orderDTO.setStatus(OrderStatus.of(order.getStatus()).getStatus());
 
 		return orderDTO;
 	};
@@ -69,11 +100,12 @@ public class EntityConverter {
 		Order order = new Order();
 		order.setId(orderDTO.getId());
 		order.setSessionId(orderDTO.getSessionId());
-		order.setAddress(orderDTO.getAddress());
+		order.setAddress(ADDRESS_FACTORY.apply(orderDTO.getAddress()));
 		order.setPhone(orderDTO.getPhone());
 		order.setSumTotal(orderDTO.getSumTotal());
 		order.setCreated(orderDTO.getCreated());
 		order.setItems(orderDTO.getItems().stream().map(ORDER_ITEM_FACTORY).collect(Collectors.toList()));
+		order.setStatus(OrderStatus.of(orderDTO.getStatus()).getIndex());
 
 		return order;
 	};

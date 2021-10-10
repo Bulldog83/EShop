@@ -11,8 +11,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
-@NamedEntityGraph(name = "Order.withItems",
-	attributeNodes = @NamedAttributeNode("items")
+@NamedEntityGraph(name = "Order.withData",
+	attributeNodes = {
+		@NamedAttributeNode("items"),
+		@NamedAttributeNode("address")
+	}
 )
 public class Order {
 	@Id
@@ -22,17 +25,21 @@ public class Order {
 	@Column(name = "session")
 	private UUID sessionId;
 	@Column
-	private String address;
-	@Column
 	private String phone;
 	@Column(name = "sum")
 	private BigDecimal sumTotal;
+	@Column
+	private int status;
 	@Column
 	@CreationTimestamp
 	private LocalDateTime created;
 	@Column
 	@UpdateTimestamp
 	private LocalDateTime updated;
+
+	@ManyToOne
+	@JoinColumn(name = "address")
+	private Address address;
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderItem> items;
@@ -63,14 +70,6 @@ public class Order {
 		this.sessionId = sessionId;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
 	public String getPhone() {
 		return phone;
 	}
@@ -79,12 +78,28 @@ public class Order {
 		this.phone = phone;
 	}
 
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
 	public List<OrderItem> getItems() {
 		return items;
 	}
 
 	public void setItems(List<OrderItem> items) {
 		this.items = items;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public LocalDateTime getCreated() {
@@ -97,9 +112,5 @@ public class Order {
 
 	public LocalDateTime getUpdated() {
 		return updated;
-	}
-
-	public void setUpdated(LocalDateTime updated) {
-		this.updated = updated;
 	}
 }

@@ -9,7 +9,10 @@ $eshop.controller('newOrderController', function($rootScope, $scope, $http, $loc
             $scope.orderData = {
                 sessionId: $rootScope.user.sessionId,
                 items: response.data.items,
-                sumTotal: response.data.sumTotal
+                sumTotal: response.data.sumTotal,
+                address : {
+                    country: 'RU'
+                }
             }
         });
     }

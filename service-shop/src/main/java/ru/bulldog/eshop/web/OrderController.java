@@ -45,11 +45,11 @@ public class OrderController {
 	@PostMapping
 	public OrderDTO createOrder(HttpServletRequest request, @RequestBody OrderDTO orderDTO) {
 		ValidationResult validationResult = Validator.validate(orderDTO);
-		if (validationResult.isValid()) {
-			Order order = orderService.create(orderDTO);
-			cartService.clearCart(order.getSessionId());
-			return ORDER_TO_DTO_FACTORY.apply(order);
+		if (validationResult.hasErrors()) {
+			throw new EntityValidationException(validationResult.getErrors());
 		}
-		throw new EntityValidationException(validationResult.getErrors());
+		Order order = orderService.create(orderDTO);
+		cartService.clearCart(order.getSessionId());
+		return ORDER_TO_DTO_FACTORY.apply(order);
 	}
 }
