@@ -1,5 +1,6 @@
 package ru.bulldog.eshop.web;
 
+import org.springframework.security.web.firewall.RequestRejectedException;
 import ru.bulldog.eshop.errors.EntityValidationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.bulldog.eshop.dto.ErrorDTO;
 
 import javax.persistence.EntityNotFoundException;
+import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 public class HandleExceptionController {
@@ -28,8 +30,18 @@ public class HandleExceptionController {
 	}
 
 	@ExceptionHandler
+	public ResponseEntity<?> onAccessDenied(AccessDeniedException ex) {
+		return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.FORBIDDEN);
+	}
+
+	@ExceptionHandler
 	public ResponseEntity<?> onValidationError(EntityValidationException ex) {
 		return new ResponseEntity<>(new ErrorDTO(ex.getErrors()), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<?> onRequestRejected(RequestRejectedException ex) {
+		return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler
