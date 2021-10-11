@@ -2,22 +2,27 @@ package ru.bulldog.eshop.payment;
 
 import com.paypal.core.PayPalHttpClient;
 import com.paypal.http.HttpResponse;
-import com.paypal.orders.*;
+import com.paypal.orders.OrderRequest;
+import com.paypal.orders.OrdersCaptureRequest;
+import com.paypal.orders.OrdersCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.firewall.RequestRejectedException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.bulldog.eshop.model.Order;
 import ru.bulldog.eshop.model.OrderStatus;
-import ru.bulldog.eshop.model.User;
 import ru.bulldog.eshop.service.OrderService;
-import ru.bulldog.eshop.service.UserService;
+import ru.bulldog.eshop.util.SessionUtil;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
-import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/paypal")
@@ -26,29 +31,28 @@ public class PayPalController {
 	private final PayPalHttpClient payPalClient;
 	private final PayPalService payPalService;
 	private final OrderService orderService;
-	private final UserService userService;
 
 	@Autowired
 	public PayPalController(PayPalHttpClient payPalClient,
 	                        PayPalService payPalService,
-	                        OrderService orderService,
-	                        UserService userService)
+	                        OrderService orderService)
 	{
 		this.payPalClient = payPalClient;
 		this.payPalService = payPalService;
 		this.orderService = orderService;
-		this.userService = userService;
 	}
 
 	@PostMapping("/create/{orderId}")
-	public ResponseEntity<?> createOrder(@PathVariable Long orderId) throws IOException {
+	public ResponseEntity<?> createOrder(HttpServletRequest httpRequest, @PathVariable Long orderId) throws IOException {
 		Order order = orderService.findById(orderId)
 				.orElseThrow(() -> new EntityNotFoundException("Order #" + orderId + " not found."));
 		if (order.getStatus() >= OrderStatus.PAID.getIndex()) {
 			throw new RequestRejectedException("Order #" + orderId + " already paid.");
 		}
-		userService.findBySessionId(order.getSessionId())
-				.orElseThrow(() -> new AccessDeniedException("You don't have permission for payment order #" + orderId));
+		UUID sessionId = SessionUtil.getSession(httpRequest).orElseThrow(() -> new AccessDeniedException("Session not found."));
+		if (!sessionId.equals(order.getSessionId())) {
+			throw new AccessDeniedException("You don't have permissions for order #" + orderId + " payment.");
+		}
 		OrdersCreateRequest request = new OrdersCreateRequest();
 		request.prefer("return=representation");
 		request.requestBody(payPalService.createOrderRequest(order));
