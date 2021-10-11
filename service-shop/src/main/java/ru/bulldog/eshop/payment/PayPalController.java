@@ -69,8 +69,7 @@ public class PayPalController {
 		com.paypal.orders.Order payPalOrder = response.result();
 		if ("COMPLETED".equals(payPalOrder.status())) {
 			long orderId = Long.parseLong(payPalOrder.purchaseUnits().get(0).referenceId());
-			Optional<Order> orderOptional = orderService.findById(orderId);
-			orderOptional.ifPresent(order -> {
+			orderService.findById(orderId).ifPresent(order -> {
 				order.setStatus(OrderStatus.PAID.getIndex());
 				orderService.save(order);
 			});
