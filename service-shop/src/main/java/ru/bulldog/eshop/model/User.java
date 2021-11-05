@@ -21,7 +21,7 @@ public class User implements UserDetails {
 	@Column(name = "raw_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "session_id")
+	@Column(name = "session_id", unique = true)
 	private UUID sessionId;
 	@Column
 	private String username;

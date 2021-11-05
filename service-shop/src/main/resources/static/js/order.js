@@ -4,7 +4,9 @@ $eshop.controller('singleOrderController', function($rootScope, $scope, $http, $
         $http.get(requestPath + '/orders/' + $routeParams.orderId)
             .then(function onSuccess(response) {
                 $scope.order = response.data;
-                $scope.renderPaymentButtons();
+                if (response.data.status == 'NEW') {
+                    $scope.renderPaymentButtons();
+                }
                 console.log(response);
             }, function onError(response) {
                 console.log(response);
@@ -34,6 +36,7 @@ $eshop.controller('singleOrderController', function($rootScope, $scope, $http, $
                     }
                 }).then(function(response) {
                    response.text().then(msg => alert(msg));
+                   $scope.getOrder();
                 });
             },
 

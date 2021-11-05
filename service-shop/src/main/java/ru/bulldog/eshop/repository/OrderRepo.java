@@ -12,8 +12,8 @@ import java.util.UUID;
 @Repository
 public interface OrderRepo extends JpaRepository<Order, Long> {
 	@Override
-	@EntityGraph(value = "Order.withItems")
+	@EntityGraph(value = "Order.withData")
 	Optional<Order> findById(Long id);
-	@EntityGraph(value = "Order.withItems")
+	@EntityGraph(value = "Order.withData")
 	List<Order> findBySessionId(UUID session);
 }
