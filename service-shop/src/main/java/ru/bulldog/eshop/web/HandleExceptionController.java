@@ -15,25 +15,25 @@ import javax.persistence.EntityNotFoundException;
 @ControllerAdvice
 public class HandleExceptionController {
 
-	private final static Logger logger = LogManager.getLogger(HandleExceptionController.class);
+	private static final Logger logger = LogManager.getLogger(HandleExceptionController.class);
 
 	@ExceptionHandler
-	public ResponseEntity<?> onEntityNotFound(EntityNotFoundException ex) {
+	public ResponseEntity<ErrorDTO> onEntityNotFound(EntityNotFoundException ex) {
 		return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler
-	public ResponseEntity<?> onBadCredentials(BadCredentialsException ex) {
+	public ResponseEntity<ErrorDTO> onBadCredentials(BadCredentialsException ex) {
 		return new ResponseEntity<>(new ErrorDTO("Invalid username or password"), HttpStatus.UNAUTHORIZED);
 	}
 
 	@ExceptionHandler
-	public ResponseEntity<?> onValidationError(EntityValidationException ex) {
+	public ResponseEntity<ErrorDTO> onValidationError(EntityValidationException ex) {
 		return new ResponseEntity<>(new ErrorDTO(ex.getErrors()), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler
-	public ResponseEntity<?> onServerError(Exception ex) {
+	public ResponseEntity<ErrorDTO> onServerError(Exception ex) {
 		logger.error(ex.getMessage(), ex);
 		return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}

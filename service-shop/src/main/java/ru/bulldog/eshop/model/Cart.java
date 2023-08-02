@@ -41,14 +41,11 @@ public class Cart {
 
 	public void setItems(List<OrderItemDTO> items) {
 		this.items = items;
+		recalculate();
 	}
 
 	public BigDecimal getSumTotal() {
 		return sumTotal;
-	}
-
-	public void setSumTotal(BigDecimal sumTotal) {
-		this.sumTotal = sumTotal;
 	}
 
 	public boolean addItem(long itemId) {

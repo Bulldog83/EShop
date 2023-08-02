@@ -43,7 +43,7 @@ public class LoginController {
 	}
 
 	@GetMapping("/login")
-	public ResponseEntity<?> checkLogin(HttpServletRequest request) {
+	public <T> ResponseEntity<T> checkLogin(HttpServletRequest request) {
 		Optional<JwtToken> tokenOptional = jwtTokenUtil.getJwtToken(request);
 		if (tokenOptional.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.OK);
@@ -52,7 +52,7 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> doLogin(@RequestBody AuthRequest authRequest) {
+	public ResponseEntity<AuthResponse> doLogin(@RequestBody AuthRequest authRequest) {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 		User user = (User) userService.loadUserByUsername(authRequest.getUsername());
 		String tokenString = jwtTokenUtil.generateTokenString(USER_TO_DTO_FACTORY.apply(user));

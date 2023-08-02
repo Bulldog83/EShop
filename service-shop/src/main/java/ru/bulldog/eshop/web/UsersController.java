@@ -25,7 +25,7 @@ public class UsersController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<?> registerUser(@RequestBody UserDTO userData) {
+	public <T> ResponseEntity<T> registerUser(@RequestBody UserDTO userData) {
 		ValidationResult validationResult = Validator.validate(userData);
 		if (validationResult.hasErrors()) {
 			throw new EntityValidationException(validationResult.getErrors());

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class EntityConverter {
 
-	public final static Function<Product, ProductDTO> PRODUCT_TO_DTO_FACTORY = product -> {
+	public static final Function<Product, ProductDTO> PRODUCT_TO_DTO_FACTORY = product -> {
 		ProductDTO productDTO = new ProductDTO();
 		productDTO.setId(product.getId());
 		productDTO.setTitle(product.getTitle());
@@ -21,7 +21,7 @@ public class EntityConverter {
 		return productDTO;
 	};
 
-	public final static Function<Category, CategoryDTO> CATEGORY_TO_DTO_FACTORY = category -> {
+	public static final Function<Category, CategoryDTO> CATEGORY_TO_DTO_FACTORY = category -> {
 		CategoryDTO categoryDTO = new CategoryDTO();
 		categoryDTO.setId(category.getId());
 		categoryDTO.setTitle(category.getTitle());
@@ -29,7 +29,7 @@ public class EntityConverter {
 		return categoryDTO;
 	};
 
-	public final static Function<OrderItemDTO, OrderItem> ORDER_ITEM_FACTORY = orderItemDTO -> {
+	public static final Function<OrderItemDTO, OrderItem> ORDER_ITEM_FACTORY = orderItemDTO -> {
 		OrderItem orderItem = new OrderItem();
 		orderItem.setId(orderItemDTO.getId());
 		orderItem.setOrder(orderItem.getOrder());
@@ -41,7 +41,7 @@ public class EntityConverter {
 		return orderItem;
 	};
 
-	public final static Function<OrderItem, OrderItemDTO> ORDER_ITEM_TO_DTO_FACTORY = orderItem -> {
+	public static final Function<OrderItem, OrderItemDTO> ORDER_ITEM_TO_DTO_FACTORY = orderItem -> {
 		OrderItemDTO orderItemDTO = new OrderItemDTO();
 		orderItemDTO.setId(orderItem.getId());
 		orderItemDTO.setTitle(orderItem.getTitle());
@@ -52,7 +52,7 @@ public class EntityConverter {
 		return orderItemDTO;
 	};
 
-	public final static Function<Address, AddressDTO> ADDRESS_TO_DTO_FACTORY = address -> {
+	public static final Function<Address, AddressDTO> ADDRESS_TO_DTO_FACTORY = address -> {
 		AddressDTO addressDTO = new AddressDTO();
 		addressDTO.setId(address.getId());
 		addressDTO.setCountry(address.getCountry());
@@ -67,7 +67,7 @@ public class EntityConverter {
 		return addressDTO;
 	};
 
-	public final static Function<AddressDTO, Address> ADDRESS_FACTORY = addressDTO -> {
+	public static final Function<AddressDTO, Address> ADDRESS_FACTORY = addressDTO -> {
 		Address address = new Address();
 		address.setId(addressDTO.getId());
 		address.setCountry(addressDTO.getCountry());
@@ -82,7 +82,7 @@ public class EntityConverter {
 		return address;
 	};
 
-	public final static Function<Order, OrderDTO> ORDER_TO_DTO_FACTORY = order -> {
+	public static final Function<Order, OrderDTO> ORDER_TO_DTO_FACTORY = order -> {
 		OrderDTO orderDTO = new OrderDTO();
 		orderDTO.setId(order.getId());
 		orderDTO.setSessionId(order.getSessionId());
@@ -96,7 +96,7 @@ public class EntityConverter {
 		return orderDTO;
 	};
 
-	public final static Function<OrderDTO, Order> ORDER_FACTORY = orderDTO -> {
+	public static final Function<OrderDTO, Order> ORDER_FACTORY = orderDTO -> {
 		Order order = new Order();
 		order.setId(orderDTO.getId());
 		order.setSessionId(orderDTO.getSessionId());
@@ -110,7 +110,7 @@ public class EntityConverter {
 		return order;
 	};
 
-	public final static Function<User, UserDTO> USER_TO_DTO_FACTORY = user -> {
+	public static final Function<User, UserDTO> USER_TO_DTO_FACTORY = user -> {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setId(user.getId());
 		userDTO.setSessionId(user.getSessionId());
@@ -123,7 +123,7 @@ public class EntityConverter {
 		return userDTO;
 	};
 
-	public final static Function<UserDTO, User> USER_FACTORY = userDTO -> {
+	public static final Function<UserDTO, User> USER_FACTORY = userDTO -> {
 		User user = new User();
 		user.setId(userDTO.getId());
 		user.setSessionId(userDTO.getSessionId());
@@ -134,4 +134,6 @@ public class EntityConverter {
 
 		return user;
 	};
+
+	private EntityConverter() {}
 }

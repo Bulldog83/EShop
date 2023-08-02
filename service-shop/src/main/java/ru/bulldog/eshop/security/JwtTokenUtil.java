@@ -13,7 +13,7 @@ import java.util.*;
 @Component
 public class JwtTokenUtil {
 
-	private final static Logger logger = LogManager.getLogger(JwtTokenUtil.class);
+	private static final Logger logger = LogManager.getLogger(JwtTokenUtil.class);
 
 	@Value("${jwt.secret}")
 	private String secret;
@@ -52,7 +52,7 @@ public class JwtTokenUtil {
 				jwtToken.setSession(UUID.fromString(sessionId));
 				return Optional.of(jwtToken);
 			} catch (JwtException jwe) {
-				logger.warn("Invalid token: " + jwe.getMessage());
+				logger.warn("Invalid token: {}", jwe.getMessage());
 			} catch (Exception ex) {
 				logger.error("Decode token error.", ex);
 			}

@@ -17,4 +17,6 @@ public class SessionUtil {
 		}
 		return Optional.empty();
 	}
+
+	private SessionUtil() {}
 }
