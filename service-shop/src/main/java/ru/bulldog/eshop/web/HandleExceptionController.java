@@ -1,5 +1,6 @@
 package ru.bulldog.eshop.web;
 
+import org.springframework.security.web.firewall.RequestRejectedException;
 import ru.bulldog.eshop.errors.EntityValidationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,29 +12,40 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.bulldog.eshop.dto.ErrorDTO;
 
 import javax.persistence.EntityNotFoundException;
+import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 public class HandleExceptionController {
 
-	private static final Logger logger = LogManager.getLogger(HandleExceptionController.class);
+	private final static Logger logger = LogManager.getLogger(HandleExceptionController.class);
 
 	@ExceptionHandler
-	public ResponseEntity<ErrorDTO> onEntityNotFound(EntityNotFoundException ex) {
+	public ResponseEntity<?> onEntityNotFound(EntityNotFoundException ex) {
 		return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler
-	public ResponseEntity<ErrorDTO> onBadCredentials(BadCredentialsException ex) {
+	public ResponseEntity<?> onBadCredentials(BadCredentialsException ex) {
 		return new ResponseEntity<>(new ErrorDTO("Invalid username or password"), HttpStatus.UNAUTHORIZED);
 	}
 
 	@ExceptionHandler
-	public ResponseEntity<ErrorDTO> onValidationError(EntityValidationException ex) {
+	public ResponseEntity<?> onAccessDenied(AccessDeniedException ex) {
+		return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.FORBIDDEN);
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<?> onValidationError(EntityValidationException ex) {
 		return new ResponseEntity<>(new ErrorDTO(ex.getErrors()), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler
-	public ResponseEntity<ErrorDTO> onServerError(Exception ex) {
+	public ResponseEntity<?> onRequestRejected(RequestRejectedException ex) {
+		return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<?> onServerError(Exception ex) {
 		logger.error(ex.getMessage(), ex);
 		return new ResponseEntity<>(new ErrorDTO(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}

@@ -29,7 +29,7 @@ public class Order {
 	@Column(name = "sum")
 	private BigDecimal sumTotal;
 	@Column
-	private int status;
+	private Integer status;
 	@Column
 	@CreationTimestamp
 	private LocalDateTime created;
@@ -94,11 +94,11 @@ public class Order {
 		this.items = items;
 	}
 
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 

@@ -40,6 +40,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public Optional<User> findBySessionId(UUID sessionId) {
+		return repository.findBySessionId(sessionId).map(this::prepareAuthorities);
+	}
+
+	@Override
 	public List<User> getAll() {
 		return repository.findAll();
 	}
@@ -74,6 +79,10 @@ public class UserServiceImpl implements UserService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = repository.findByUsername(username).orElseThrow(() ->
 				new UsernameNotFoundException(String.format("Username %s not found.", username)));
+		return prepareAuthorities(user);
+	}
+
+	private User prepareAuthorities(User user) {
 		Set<GrantedAuthority> authorities = new HashSet<>();
 		user.getRoles().forEach(role -> {
 			authorities.addAll(role.getPermissions());
